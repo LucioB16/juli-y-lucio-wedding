@@ -16,8 +16,11 @@ Para desarrollar y ver tu proyecto funcionando en tu propia PC:
 
 | Comando                   | Acción                                           |
 | :------------------------ | :----------------------------------------------- |
-| `npm install`             | Instala todas las dependencias requeridas        |
-| `npm run dev`             | Inicia el servidor de desarrollo local           |
-| `npm run build`           | Compila la versión de producción estática (SSG)  |
+| `bun install`             | Installs dependencies                            |
+| `bun dev`                 | Starts local dev server at `localhost:4321`      |
+| `bun build`               | Build your production site to `./dist/`          |
+| `bun preview`             | Preview your build locally, before deploying     |
+| `bun astro ...`           | Run CLI commands like `astro add`, `astro check` |
+| `bun astro -- --help`     | Get help using the Astro CLI                     |
 
 Este repositorio ha sido configurado especialmente para tener soporte total en **GitHub Pages** de manera nativa sin usar runtime de servidor, incluyendo redirecciones y carga de CDN.
