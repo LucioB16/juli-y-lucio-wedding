@@ -1,12 +1,13 @@
 ---
-import { getEventData } from "../data/eventData";
-const { hero } = getEventData();
+import { getWeddingData } from "../data/weddingData";
+const { hero } = getWeddingData();
 ---
 
 <section
     id="hero"
     class="hero relative overflow-hidden [&_.section__inner]:max-w-none [&_.section__inner]:p-0"
     style={`
+        ${hero.backgroundImage ? `background-image: linear-gradient(rgba(0,0,0,0.3), rgba(0,0,0,0.3)), url("${hero.backgroundImage}");` : ''}
         background-size: cover;
         background-position: center;
         background-repeat: no-repeat;
@@ -20,9 +21,9 @@ const { hero } = getEventData();
             <div class="space-y-6 text-left md:max-w-3xl">
                 <p
                     class="text-xs uppercase tracking-[0.65em]"
-                    style="color: var(--color-secondary); opacity: 0.7;"
+                    style="color: var(--color-background); opacity: 0.9;"
                 >
-                    {hero.tagline}
+                    {hero.subtitle}
                 </p>
                 <h1
                     class="font-display text-[clamp(3.5rem,8vw,6.5rem)] uppercase leading-[0.88] tracking-tight drop-shadow-md"
@@ -32,21 +33,9 @@ const { hero } = getEventData();
                 >
                     {hero.title}
                 </h1>
-                <p
-                    class="max-w-2xl text-base leading-relaxed md:text-lg"
-                    style="color: var(--color-secondary); opacity: 0.9;"
-                >
-                    {hero.description}
-                </p>
             </div>
 
             <div class="text-left md:text-right">
-                <p
-                    class="text-xs uppercase tracking-[0.45em]"
-                    style="color: var(--color-secondary); opacity: 0.7;"
-                >
-                    {hero.weekday}
-                </p>
                 <p
                     class="font-display text-4xl uppercase tracking-[0.2em]"
                     style="color: var(--color-background);"
@@ -55,9 +44,9 @@ const { hero } = getEventData();
                 </p>
                 <p
                     class="mt-4 text-sm font-semibold uppercase tracking-[0.35em]"
-                    style="color: var(--color-secondary); opacity: 0.7;"
+                    style="color: var(--color-background); opacity: 0.9;"
                 >
-                    {hero.location}
+                    {hero.city}
                 </p>
             </div>
         </div>

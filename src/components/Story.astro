@@ -1,32 +1,8 @@
 ---
-import { Image } from "astro:assets";
-import { getEventData } from "../data/eventData";
+import { getWeddingData } from "../data/weddingData";
 
-const { story } = getEventData();
-const highlights = story.highlights ?? [];
-const imageAlt = story.imageAlt ?? "Our story together";
-
-const storyImageModules = import.meta.glob("../assets/**/*", {
-    eager: true,
-    import: "default",
-}) as Record<string, ImageMetadata>;
-
-const resolveStoryImage = (filename?: string) => {
-    if (!filename) return null;
-    const normalized = filename.replace(/^\.\?\//, "").replace(/^assets\//, "");
-    const match = Object.entries(storyImageModules).find(([path]) => {
-        const withoutPrefix = path.replace("../assets/", "");
-        return (
-            withoutPrefix === normalized ||
-            withoutPrefix.endsWith(`/${normalized}`) ||
-            path.endsWith(`/${normalized}`)
-        );
-    });
-
-    return match?.[1] ?? null;
-};
-
-const storyImage = resolveStoryImage(story.imageAsset) ?? null;
+const { story } = getWeddingData();
+const photo = story.photos[0]; // Take the first photo as the main story photo
 ---
 
 <section
@@ -41,7 +17,7 @@ const storyImage = resolveStoryImage(story.imageAsset) ?? null;
                 class="text-sm uppercase tracking-[0.35em] font-(--font-sans)"
                 style="color: var(--color-primary); opacity: 0.7;"
             >
-                {story.chapterLabel}
+                {story.subheading}
             </p>
             <h2
                 class="text-4xl sm:text-5xl tracking-tight font-(--font-display)"
@@ -53,36 +29,21 @@ const storyImage = resolveStoryImage(story.imageAsset) ?? null;
                 class="text-lg leading-relaxed whitespace-pre-line font-(--font-sans)"
                 style="color: var(--color-primary); opacity: 0.8;"
             >
-                {story.body}
+                {story.sentence}
             </p>
-
-            <div
-                class="mt-6 flex flex-wrap gap-3 text-sm font-(--font-sans)"
-                style="color: var(--color-primary); opacity: 0.7;"
-            >
-                {
-                    highlights.map((highlight) => (
-                        <span
-                            class="inline-flex items-center gap-2 rounded-full border px-4 py-2"
-                            style="border-color: var(--color-text-dark);"
-                        >
-                            {highlight}
-                        </span>
-                    ))
-                }
-            </div>
         </div>
 
         <div class="md:w-5/12">
             <div class="relative">
                 <div class="relative rounded-4xl border p-4 backdrop-blur">
-                    <Image
-                        src={storyImage}
-                        alt={imageAlt}
-                        class="h-full w-full rounded-3xl object-cover"
-                        loading="lazy"
-                        format="webp"
-                    />
+                    {photo && (
+                        <img
+                            src={photo.src}
+                            alt={photo.alt}
+                            class="h-full w-full rounded-3xl object-cover"
+                            loading="lazy"
+                        />
+                    )}
                 </div>
             </div>
         </div>

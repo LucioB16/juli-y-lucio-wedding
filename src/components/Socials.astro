@@ -1,0 +1,26 @@
+---
+import { getWeddingData } from "../data/weddingData";
+import Icon from "./Icon.astro";
+
+const { socials } = getWeddingData();
+---
+
+<section class="section bg-gray-50">
+    <div class="section__inner container mx-auto px-4 py-16 text-center">
+        <h2 class="text-3xl font-bold mb-8">Compartí con nosotros</h2>
+        <div class="flex flex-wrap justify-center gap-6">
+            {socials.items.map((item) => (
+                <a 
+                    href={item.url} 
+                    target="_blank" 
+                    rel="noopener noreferrer"
+                    class="flex items-center gap-2 bg-white px-6 py-3 rounded-full shadow-sm hover:shadow-md transition-shadow"
+                >
+                    <Icon name="lucide:instagram" class="text-xl text-primary" />
+                    <span class="font-medium text-gray-800">{item.handle}</span>
+                </a>
+            ))}
+        </div>
+        <p class="mt-8 text-gray-500 text-sm">Usá nuestro hashtag en tus fotos y videos</p>
+    </div>
+</section>

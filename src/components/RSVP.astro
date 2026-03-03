@@ -1,0 +1,33 @@
+---
+import { getWeddingData } from "../data/weddingData";
+import Icon from "./Icon.astro";
+
+const { rsvp } = getWeddingData();
+---
+
+<section class="section">
+    <div class="section__inner container mx-auto px-4 py-16 text-center max-w-2xl flex flex-col items-center">
+        <div class="text-5xl text-primary mb-6">
+            <Icon name="lucide:mail-open" />
+        </div>
+        <h2 class="text-3xl font-bold mb-4">Confirmar Asistencia</h2>
+        <p class="text-lg text-gray-600 mb-8">{rsvp.text}</p>
+        
+        {rsvp.deadline && (
+            <p class="text-sm font-semibold text-primary mb-6 tracking-wide uppercase">
+                Fecha límite: {rsvp.deadline}
+            </p>
+        )}
+
+        {rsvp.mode === "link" && rsvp.url && (
+            <a 
+                href={rsvp.url} 
+                target="_blank" 
+                rel="noopener noreferrer"
+                class="inline-block bg-primary text-white font-bold py-3 px-8 rounded-full hover:bg-opacity-90 transition-colors"
+            >
+                Confirmar RSVP
+            </a>
+        )}
+    </div>
+</section>
