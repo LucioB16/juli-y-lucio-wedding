@@ -1,9 +1,8 @@
 site:
   pageTitle: "Nuestra Boda | Juli & Lucio"
-  baseUrl: "https://LucioB16.github.io/Altare/"
   meta:
     description: "Estás invitado a celebrar con nosotros este momento tan especial."
-    ogImage: "/Altare/media/og/og.jpg"
+    ogImage: "/media/og/og.jpg"
 
 couple:
   person1:

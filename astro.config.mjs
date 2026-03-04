@@ -4,8 +4,8 @@ import tailwindcss from "@tailwindcss/vite";
 
 // https://astro.build/config
 export default defineConfig({
-  site: 'https://LucioB16.github.io',
-  base: '/juli-y-lucio-wedding',
+  site: process.env.SITE || 'https://LucioB16.github.io',
+  base: process.env.BASE || '/juli-y-lucio-wedding',
   vite: {
     plugins: [tailwindcss()],
   },

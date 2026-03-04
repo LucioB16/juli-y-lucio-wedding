@@ -1147,10 +1147,9 @@ Ascochinga, Córdoba</textarea></div>
 
             y += `site:\n`;
             y += `  pageTitle: ${esc(v('pageTitle'))}\n`;
-            y += `  baseUrl: "https://YOUR_USERNAME.github.io/${slug}/"\n`;
             y += `  meta:\n`;
             y += `    description: ${esc(v('metaDesc'))}\n`;
-            y += `    ogImage: "${basePath}media/og/og.${ogFileNameExt}"\n\n`;
+            y += `    ogImage: "/media/og/og.${ogFileNameExt}"\n\n`;
 
             y += `couple:\n`;
             y += `  person1:\n    name: ${esc(v('p1Name'))}\n`;
