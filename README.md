@@ -2,7 +2,7 @@
 
 Una invitación de boda digital, elegante y 100% configurable. Desplegá tu propio sitio en minutos, sin saber programar.
 
-🔗 **[Ver demo en vivo](https://luciob16.github.io/juli-y-lucio-wedding/)**
+🔗 **[Ver demo en vivo](https://luciob16.github.io/Altare/)**
 
 ---
 
@@ -12,7 +12,7 @@ Una invitación de boda digital, elegante y 100% configurable. Desplegá tu prop
 
 Hacé click en el botón de abajo para crear una copia del template en tu cuenta de GitHub:
 
-[![Use this template](https://img.shields.io/badge/Usar_este_template-238636?style=for-the-badge&logo=github&logoColor=white)](https://github.com/LucioB16/juli-y-lucio-wedding/generate)
+[![Use this template](https://img.shields.io/badge/Usar_este_template-238636?style=for-the-badge&logo=github&logoColor=white)](https://github.com/LucioB16/Altare/generate)
 
 > Elegí un nombre como `mi-boda` o `boda-maria-y-juan`. Dejá el repo como **público**.
 
@@ -20,7 +20,7 @@ Hacé click en el botón de abajo para crear una copia del template en tu cuenta
 
 Usá nuestro **Config Builder** para generar tu archivo de configuración sin tocar código:
 
-[![Abrir Config Builder](https://img.shields.io/badge/🔧_Abrir_Config_Builder-5A7156?style=for-the-badge&logoColor=white)](https://luciob16.github.io/juli-y-lucio-wedding/config-builder/)
+[![Abrir Config Builder](https://img.shields.io/badge/🔧_Abrir_Config_Builder-5A7156?style=for-the-badge&logoColor=white)](https://luciob16.github.io/Altare/config-builder/)
 
 El Config Builder te guía paso a paso para configurar:
 - 👫 Nombres de la pareja
@@ -57,6 +57,8 @@ Al final genera un archivo `wedding.yml` que descargás o copiás.
 1. Andá a **Settings** → **Pages** en tu repositorio
 2. En **"Source"**, elegí **"GitHub Actions"**
 3. ¡Listo! En unos minutos tu sitio estará disponible en `https://TU_USUARIO.github.io/TU_REPO/`
+
+> 💡 La URL de tu invitación se forma con tu **nombre de usuario de GitHub** + el **nombre del repositorio** que elegiste al hacer click en "Use this template". Por ejemplo, si tu usuario es `mariaj` y nombraste tu repo `mi-boda`, tu invitación va a estar en `https://mariaj.github.io/mi-boda/`.
 
 ---
 

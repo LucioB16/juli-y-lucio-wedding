@@ -1,9 +1,9 @@
 site:
   pageTitle: "Nuestra Boda | Juli & Lucio"
-  baseUrl: "https://LucioB16.github.io/juli-y-lucio-wedding/"
+  baseUrl: "https://LucioB16.github.io/Altare/"
   meta:
     description: "Estás invitado a celebrar con nosotros este momento tan especial."
-    ogImage: "/juli-y-lucio-wedding/media/og/og.jpg"
+    ogImage: "/Altare/media/og/og.jpg"
 
 couple:
   person1:
@@ -47,7 +47,7 @@ hero:
   subtitle: "Julieta & Lucio"
   dateDisplay: "21 de Junio de 2026"
   city: "Córdoba, Argentina"
-  backgroundImage: "/juli-y-lucio-wedding/media/hero/bg.jpg"
+  backgroundImage: "/Altare/media/hero/bg.jpg"
 
 countdown:
   target: "2026-06-21T21:00:00Z"
@@ -92,13 +92,13 @@ story:
   subheading: "Nosotros"
   sentence: "Hace 5 años cruzamos miradas por primera vez en aquel viaje, y desde ese día supimos que queríamos caminar juntos para siempre. Las risas, los viajes y los mates compartidos nos trajeron hasta acá."
   photos:
-    - src: "/juli-y-lucio-wedding/media/couple/01.jpg"
+    - src: "/Altare/media/couple/01.jpg"
       alt: "Foto juntos 1"
-    - src: "/juli-y-lucio-wedding/media/couple/02.jpg"
+    - src: "/Altare/media/couple/02.jpg"
       alt: "Foto juntos 2"
-    - src: "/juli-y-lucio-wedding/media/couple/03.jpg"
+    - src: "/Altare/media/couple/03.jpg"
       alt: "Foto juntos 3"
-    - src: "/juli-y-lucio-wedding/media/couple/04.jpg"
+    - src: "/Altare/media/couple/04.jpg"
       alt: "Foto juntos 4"
 
 socials:
