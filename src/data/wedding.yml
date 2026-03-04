@@ -13,7 +13,7 @@ couple:
 
 locale:
   language: "es-AR"
-  timeZone: "America/Argentina/Cordoba"
+  timeZone: "America/Buenos_Aires"
 
 sections:
   countdown:
@@ -48,7 +48,7 @@ hero:
   backgroundImage: "/media/hero/bg.jpg"
 
 countdown:
-  target: "2026-06-21T21:00:00Z"
+  target: "2026-06-21T21:00:00-03:00"
   heading: "Cuenta regresiva"
   note: "¡Falta muy poco!"
   targetSource: "celebration"
@@ -57,7 +57,7 @@ events:
   religiousCeremony:
     enabled: false
     kindLabel: "Ceremonia Religiosa"
-    datetime: "2026-06-21T17:00:00Z"
+    datetime: "2026-06-21T17:00:00-03:00"
     timeDisplay: "17:00 hs"
     venueName: "Parroquia Sagrado Corazón"
     addressLines:
@@ -67,7 +67,7 @@ events:
   ceremony:
     enabled: true
     kindLabel: "Ceremonia Civil"
-    datetime: "2026-06-21T18:00:00Z"
+    datetime: "2026-06-21T18:00:00-03:00"
     timeDisplay: "18:00 hs"
     venueName: "Registro Civil Central"
     addressLines:
@@ -77,7 +77,7 @@ events:
   celebration:
     enabled: true
     kindLabel: "Fiesta"
-    datetime: "2026-06-21T21:00:00Z"
+    datetime: "2026-06-21T21:00:00-03:00"
     timeDisplay: "21:00 hs"
     venueName: "Estancia La Paz"
     addressLines:

@@ -5,7 +5,40 @@ import Divider from "./Divider.astro";
 import SectionIcon from "./SectionIcon.astro";
 
 const { calendar, events, locale, couple } = getWeddingData();
-const timeZone = locale.timeZone || "UTC";
+
+const TIMEZONE_ALIASES: Record<string, string> = {
+    "America/Argentina/Buenos_Aires": "America/Buenos_Aires",
+    "America/Argentina/Cordoba": "America/Cordoba",
+};
+
+function isValidTimeZoneId(timeZone: string): boolean {
+    try {
+        new Intl.DateTimeFormat("en-US", { timeZone }).format(new Date());
+        return true;
+    } catch {
+        return false;
+    }
+}
+
+function resolveTimeZone(timeZone: string | undefined): string {
+    const candidate = timeZone?.trim();
+    if (!candidate) {
+        return "UTC";
+    }
+
+    if (isValidTimeZoneId(candidate)) {
+        return candidate;
+    }
+
+    const alias = TIMEZONE_ALIASES[candidate];
+    if (alias && isValidTimeZoneId(alias)) {
+        return alias;
+    }
+
+    return "UTC";
+}
+
+const timeZone = resolveTimeZone(locale.timeZone);
 const buildStamp = new Date()
     .toISOString()
     .replace(/[-:]/g, "")
@@ -67,8 +100,27 @@ function addMinutes(date: Date, minutes: number): Date {
     return new Date(date.getTime() + minutes * 60 * 1000);
 }
 
-function toCompactDate(date: Date): string {
-    return date.toISOString().slice(0, 19).replace(/[-:]/g, "");
+function toCompactDateInTimeZone(date: Date, timeZone: string): string {
+    const formatter = new Intl.DateTimeFormat("en-US", {
+        timeZone,
+        year: "numeric",
+        month: "2-digit",
+        day: "2-digit",
+        hour: "2-digit",
+        minute: "2-digit",
+        second: "2-digit",
+        hour12: false,
+        hourCycle: "h23",
+    });
+
+    const parts: Partial<Record<Intl.DateTimeFormatPartTypes, string>> = {};
+    formatter.formatToParts(date).forEach((part) => {
+        if (part.type !== "literal") {
+            parts[part.type] = part.value;
+        }
+    });
+
+    return `${parts.year}${parts.month}${parts.day}T${parts.hour}${parts.minute}${parts.second}`;
 }
 
 function normalizeIcsFileName(
@@ -94,13 +146,15 @@ function buildLocation(event: WeddingEvent): string {
 }
 
 function createGCalUrl(item: CalendarItem): string {
-    const dates = `${toCompactDate(item.start)}/${toCompactDate(item.end)}`;
+    const start = toCompactDateInTimeZone(item.start, timeZone);
+    const end = toCompactDateInTimeZone(item.end, timeZone);
+    const dates = `${start}/${end}`;
     return `https://calendar.google.com/calendar/render?action=TEMPLATE&text=${encodeURIComponent(item.title)}&dates=${dates}&details=${encodeURIComponent(item.description)}&location=${encodeURIComponent(item.location)}&ctz=${encodeURIComponent(timeZone)}`;
 }
 
 function createIcsContent(item: CalendarItem): string {
-    const start = toCompactDate(item.start);
-    const end = toCompactDate(item.end);
+    const start = toCompactDateInTimeZone(item.start, timeZone);
+    const end = toCompactDateInTimeZone(item.end, timeZone);
     const uid = `${item.id}-${start}@altare`;
     const escapedTimeZone = escapeIcsText(timeZone);
 

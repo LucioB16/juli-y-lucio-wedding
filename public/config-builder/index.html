@@ -851,8 +851,8 @@
             <!-- Zona horaria -->
             <div class="field">
                 <label>Zona horaria de los eventos</label>
-                <select id="eventTimezone" class="tz-select" data-default-tz="America/Argentina/Buenos_Aires">
-                    <option value="America/Argentina/Buenos_Aires">Cargando zonas horarias…</option>
+                <select id="eventTimezone" class="tz-select" data-default-tz="America/Buenos_Aires">
+                    <option value="America/Buenos_Aires">Cargando zonas horarias…</option>
                 </select>
                 <p class="hint">Mostramos una opción por huso horario (UTC) con una región/ciudad de referencia.</p>
             </div>
@@ -1472,11 +1472,28 @@ Ascochinga, Córdoba</textarea></div>
             return zone.replace(/_/g, ' ');
         }
 
+        function normalizeTimeZoneId(timeZone, supportedZonesSet) {
+            if (!timeZone) return 'UTC';
+            if (supportedZonesSet.has(timeZone)) return timeZone;
+
+            const aliases = {
+                'America/Argentina/Buenos_Aires': 'America/Buenos_Aires',
+                'America/Argentina/Cordoba': 'America/Cordoba',
+            };
+
+            const normalized = aliases[timeZone];
+            if (normalized && supportedZonesSet.has(normalized)) {
+                return normalized;
+            }
+
+            return timeZone;
+        }
+
         function initTimeZonePicker() {
             const select = document.getElementById('eventTimezone');
             if (!select) return;
 
-            const preferredTz = select.dataset.defaultTz || 'America/Argentina/Buenos_Aires';
+            const configuredDefaultTz = select.dataset.defaultTz || 'America/Buenos_Aires';
             const year = new Date().getUTCFullYear();
             const referenceDates = [
                 new Date(Date.UTC(year, 0, 15, 12, 0, 0)),
@@ -1486,9 +1503,50 @@ Ascochinga, Córdoba</textarea></div>
             const supportedZones =
                 typeof Intl.supportedValuesOf === 'function'
                     ? Intl.supportedValuesOf('timeZone')
-                    : ['UTC', preferredTz];
+                    : ['UTC', configuredDefaultTz];
+            const supportedZonesSet = new Set(supportedZones);
+            const preferredTz = normalizeTimeZoneId(configuredDefaultTz, supportedZonesSet);
 
             const offsetToZone = new Map();
+            const offsetPreferredZones = new Map([
+                [-660, 'Pacific/Pago_Pago'],
+                [-600, 'Pacific/Honolulu'],
+                [-570, 'Pacific/Marquesas'],
+                [-540, 'America/Anchorage'],
+                [-480, 'America/Los_Angeles'],
+                [-420, 'America/Denver'],
+                [-360, 'America/Chicago'],
+                [-300, 'America/New_York'],
+                [-240, 'America/Caracas'],
+                [-210, 'America/St_Johns'],
+                [-180, 'America/Buenos_Aires'],
+                [-120, 'Atlantic/South_Georgia'],
+                [-60, 'Atlantic/Azores'],
+                [0, 'Europe/London'],
+                [60, 'Europe/Madrid'],
+                [120, 'Europe/Athens'],
+                [180, 'Europe/Istanbul'],
+                [210, 'Asia/Tehran'],
+                [240, 'Asia/Dubai'],
+                [270, 'Asia/Kabul'],
+                [300, 'Asia/Karachi'],
+                [330, 'Asia/Kolkata'],
+                [345, 'Asia/Kathmandu'],
+                [360, 'Asia/Dhaka'],
+                [390, 'Asia/Yangon'],
+                [420, 'Asia/Bangkok'],
+                [480, 'Asia/Shanghai'],
+                [525, 'Australia/Eucla'],
+                [540, 'Asia/Tokyo'],
+                [570, 'Australia/Darwin'],
+                [600, 'Australia/Sydney'],
+                [630, 'Australia/Lord_Howe'],
+                [660, 'Pacific/Guadalcanal'],
+                [720, 'Pacific/Auckland'],
+                [765, 'Pacific/Chatham'],
+                [780, 'Pacific/Tongatapu'],
+                [840, 'Pacific/Kiritimati'],
+            ]);
             const offsetReferences = new Map([
                 [-660, 'Pacífico Sur (Samoa)'],
                 [-600, 'US/Canada Hawai-Aleutian (Honolulu)'],
@@ -1546,14 +1604,21 @@ Ascochinga, Córdoba</textarea></div>
 
             select.innerHTML = '';
             const sortedOffsets = Array.from(offsetToZone.keys()).sort((a, b) => a - b);
+            const optionZoneByOffset = new Map();
             sortedOffsets.forEach((offset) => {
                 const option = document.createElement('option');
-                const representativeZone = offsetToZone.get(offset);
+                const fallbackZone = offsetToZone.get(offset);
+                const preferredZoneForOffset = offsetPreferredZones.get(offset);
+                const representativeZone =
+                    preferredZoneForOffset && supportedZonesSet.has(preferredZoneForOffset)
+                        ? preferredZoneForOffset
+                        : fallbackZone;
                 const reference = offsetReferences.get(offset) || formatZoneReference(representativeZone);
 
                 option.value = representativeZone;
                 option.textContent = `UTC${formatOffset(offset)} — ${reference}`;
                 option.title = representativeZone;
+                optionZoneByOffset.set(offset, representativeZone);
                 select.appendChild(option);
             });
 
@@ -1563,8 +1628,8 @@ Ascochinga, Córdoba</textarea></div>
             }
 
             const preferredOffset = getTimeZoneOffsetMinutes(referenceDates[0], preferredTz);
-            if (offsetToZone.has(preferredOffset)) {
-                select.value = offsetToZone.get(preferredOffset);
+            if (optionZoneByOffset.has(preferredOffset)) {
+                select.value = optionZoneByOffset.get(preferredOffset);
                 return;
             }
 
