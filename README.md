@@ -82,9 +82,22 @@ Si sos desarrollador y querés personalizar el diseño:
 ```bash
 git clone https://github.com/TU_USUARIO/TU_REPO.git
 cd TU_REPO
-npm install
-npm run dev
+bun install
+bun dev
 ```
+
+### 🧞 Comandos
+
+Todos los comandos se ejecutan desde la raíz del proyecto:
+
+| Comando                   | Acción                                           |
+| :------------------------ | :----------------------------------------------- |
+| `bun install`             | Instala las dependencias                         |
+| `bun dev`                 | Inicia el servidor de desarrollo en `localhost:4321` |
+| `bun build`               | Genera el sitio de producción en `./dist/`       |
+| `bun preview`             | Previsualiza el build localmente antes de deployar |
+| `bun astro ...`           | Ejecuta comandos del CLI como `astro add`, `astro check` |
+| `bun astro -- --help`     | Muestra la ayuda del CLI de Astro                |
 
 ### Estructura del proyecto
 
@@ -114,7 +127,6 @@ Este proyecto está basado en [**SaidYes**](https://github.com/roicort/saidyes) 
 Este fork mantiene la misma licencia. Podés usar, modificar y distribuir este código siempre que:
 - Mantengas la atribución al proyecto original
 - Distribuyas tus modificaciones bajo la misma licencia AGPL-3.0
-- Si lo usás en un servicio de red, proporciones acceso al código fuente
 
 📄 Ver [LICENSE](LICENSE) para más detalles.
 
