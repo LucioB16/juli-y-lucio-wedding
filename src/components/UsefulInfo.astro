@@ -3,6 +3,7 @@ import { getWeddingData } from "../data/weddingData";
 import Icon from "./Icon.astro";
 const data = getWeddingData();
 const info = data.usefulInfo;
+const enabledItems = info.items.filter((i) => i.enabled);
 import Divider from "./Divider.astro";
 import SectionIcon from "./SectionIcon.astro";
 ---
@@ -22,12 +23,10 @@ import SectionIcon from "./SectionIcon.astro";
     </div>
 
     <!-- Cards Grid -->
-    <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+    <div class="flex flex-wrap justify-center gap-8">
       {
-        info.items
-          .filter((i) => i.enabled)
-          .map((item) => (
-            <div class="flex flex-col items-center text-center">
+        enabledItems.map((item) => (
+            <div class="flex w-full max-w-xl flex-col items-center text-center md:w-[calc(50%-1rem)]">
               <div class="text-primary mb-6 flex justify-center items-center w-12 h-12">
                 <Icon name={item.icon} class="text-4xl" />
               </div>

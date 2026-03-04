@@ -104,13 +104,20 @@ jobs:
             exit 0
           fi
           
-          # Replace Demo Link specifically searching for "Demo" in the badge text
-          # Badge markdown: [![Ver Demo en Vivo](...)](https://old-url.com/)
-          sed -i -E "s|(\[!\[[^]]*Demo[^]]*\]\([^)]+\)\])\([^)]+\)|\1($URL/)|gi" README.md
-          
-          # Replace Config Builder Link specifically searching for "Config Builder" in the badge text
-          # Badge markdown: [![Abrir Config Builder](...)](...)
-          sed -i -E "s|(\[!\[[^]]*Config Builder[^]]*\]\([^)]+\)\])\([^)]+\)|\1($URL/config-builder/)|gi" README.md
+          # Replace template URLs with this repo's deployed URLs.
+          # This handles both plain links and badge links.
+          ESCAPED_URL=$(printf '%s' "$URL" | sed 's|&|\\&|g')
+          ESCAPED_BUILDER_URL=$(printf '%s' "$URL/config-builder/" | sed 's|&|\\&|g')
+
+          # Replace Config Builder URL first (specific path before root URL).
+          sed -i -E "s|https://luciob16\.github\.io/Altare/config-builder/?|$ESCAPED_BUILDER_URL|g" README.md
+
+          # Replace demo/root URL.
+          sed -i -E "s|https://luciob16\.github\.io/Altare/?|$ESCAPED_URL/|g" README.md
+
+          # Backward compatibility for old README formats based only on badge text.
+          sed -i -E "s|(\[!\[[^]]*Demo[^]]*\]\([^)]+\)\])\([^)]+\)|\1($ESCAPED_URL/)|gi" README.md
+          sed -i -E "s|(\[!\[[^]]*Config Builder[^]]*\]\([^)]+\)\])\([^)]+\)|\1($ESCAPED_BUILDER_URL)|gi" README.md
           
           # Check if there are changes
           if git diff --quiet README.md; then
