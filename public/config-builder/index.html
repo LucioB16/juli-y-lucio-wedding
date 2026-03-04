@@ -701,27 +701,33 @@ Ascochinga, Córdoba</textarea></div>
                 <span>Mostrar sección</span>
                 <div class="toggle on" data-field="storyEnabled" onclick="toggleSwitch(this)"></div>
             </div>
-            <div class="field"><label>Subtítulo</label><input type="text" id="storySubheading" value="Nosotros"></div>
-            <div class="field"><label>Título</label><input type="text" id="storyHeading" value="Nuestra historia"></div>
-            <div class="field"><label>Texto</label><textarea id="storySentence"
-                    rows="3">Hace 5 años cruzamos miradas por primera vez en aquel viaje, y desde ese día supimos que queríamos caminar juntos para siempre.</textarea>
-            </div>
+            <div id="storyFields">
+                <div class="field"><label>Subtítulo</label><input type="text" id="storySubheading" value="Nosotros">
+                </div>
+                <div class="field"><label>Título</label><input type="text" id="storyHeading" value="Nuestra historia">
+                </div>
+                <div class="field"><label>Texto</label><textarea id="storySentence"
+                        rows="3">Hace 5 años cruzamos miradas por primera vez en aquel viaje, y desde ese día supimos que queríamos caminar juntos para siempre.</textarea>
+                </div>
 
-            <p class="step-label" style="margin-top:1rem">Fotos (1–4)</p>
-            <p class="hint" style="margin-bottom:1rem">Seleccioná tus fotos para establecer los nombres de archivo.
-                Después subí las fotos a la carpeta <code>public/media/couple/</code> en tu repositorio con esos mismos
-                nombres.</p>
-            <div class="dynamic-list" id="photoItems">
-                <div class="dynamic-item">
-                    <div class="file-picker">
-                        <label class="file-picker-btn" for="photoFile01">Seleccionar foto</label>
-                        <input type="file" id="photoFile01" accept="image/*" onchange="onPhotoSelected(this)"
-                            style="display:none">
-                        <span class="file-picker-name photoFileName">01.jpg</span>
+                <p class="step-label" style="margin-top:1rem">Fotos (1–4)</p>
+                <p class="hint" style="margin-bottom:1rem">Seleccioná tus fotos para establecer los nombres de archivo.
+                    Después subí las fotos a la carpeta <code>public/media/couple/</code> en tu repositorio con esos
+                    mismos
+                    nombres.</p>
+                <div class="dynamic-list" id="photoItems">
+                    <div class="dynamic-item">
+                        <div class="file-picker">
+                            <label class="file-picker-btn" for="photoFile01">Seleccionar foto</label>
+                            <input type="file" id="photoFile01" accept="image/*" onchange="onPhotoSelected(this)"
+                                style="display:none">
+                            <span class="file-picker-name photoFileName">01.jpg</span>
+                        </div>
                     </div>
                 </div>
+                <button class="btn-add" onclick="addPhoto()" style="margin-top:1rem; width:100%;">+ Agregar
+                    foto</button>
             </div>
-            <button class="btn-add" onclick="addPhoto()" style="margin-top:1rem; width:100%;">+ Agregar foto</button>
         </div>
 
         <!-- ============ STEP 5: Gifts & DressCode ============ -->
@@ -733,9 +739,11 @@ Ascochinga, Córdoba</textarea></div>
             <div class="toggle-row"><span>Mostrar sección Regalos</span>
                 <div class="toggle on" data-field="giftsEnabled" onclick="toggleSwitch(this)"></div>
             </div>
-            <div class="field"><label>Título</label><input type="text" id="giftsHeading" value="Regalos"></div>
-            <div class="field"><label>Texto</label><textarea
-                    id="giftsBody">Lo más importante es tu presencia, pero si deseás hacernos un regalo podés ayudarnos con nuestra luna de miel.</textarea>
+            <div id="giftsFields">
+                <div class="field"><label>Título</label><input type="text" id="giftsHeading" value="Regalos"></div>
+                <div class="field"><label>Texto</label><textarea
+                        id="giftsBody">Lo más importante es tu presencia, pero si deseás hacernos un regalo podés ayudarnos con nuestra luna de miel.</textarea>
+                </div>
             </div>
             <div class="toggle-row"><span>Mostrar datos bancarios</span>
                 <div class="toggle on" data-field="bankEnabled" onclick="toggleSwitch(this)"></div>
@@ -762,15 +770,19 @@ Ascochinga, Córdoba</textarea></div>
             <div class="toggle-row"><span>Mostrar sección Dress Code</span>
                 <div class="toggle on" data-field="dressCodeEnabled" onclick="toggleSwitch(this)"></div>
             </div>
-            <div class="field"><label>Título</label><input type="text" id="dcTitle" value="Dress Code"></div>
-            <div class="field"><label>Etiqueta</label><input type="text" id="dcTag" value="Formal – Elegante"></div>
-            <div class="field"><label>Texto</label><input type="text" id="dcBody"
-                    value="Te esperamos con tu mejor look para celebrar juntos."></div>
+            <div id="dressCodeFields">
+                <div class="field"><label>Título</label><input type="text" id="dcTitle" value="Dress Code"></div>
+                <div class="field"><label>Etiqueta</label><input type="text" id="dcTag" value="Formal – Elegante"></div>
+                <div class="field"><label>Texto</label><input type="text" id="dcBody"
+                        value="Te esperamos con tu mejor look para celebrar juntos."></div>
+            </div>
             <div class="toggle-row"><span>Mostrar aviso colores novia</span>
                 <div class="toggle on" data-field="brideDisclaimerEnabled" onclick="toggleSwitch(this)"></div>
             </div>
-            <div class="field"><label>Texto del aviso</label><input type="text" id="brideDisclaimerText"
-                    value="Como es tradición, los colores blancos, o similares, estarán reservados para la novia.">
+            <div id="brideDisclaimerFields">
+                <div class="field"><label>Texto del aviso</label><input type="text" id="brideDisclaimerText"
+                        value="Como es tradición, los colores blancos, o similares, estarán reservados para la novia.">
+                </div>
             </div>
         </div>
 
@@ -782,17 +794,20 @@ Ascochinga, Córdoba</textarea></div>
             <div class="toggle-row"><span>Mostrar sección</span>
                 <div class="toggle on" data-field="rsvpEnabled" onclick="toggleSwitch(this)"></div>
             </div>
-            <div class="field"><label>Texto</label><textarea
-                    id="rsvpText">Por favor confirmá tu asistencia antes del 1 de Mayo.</textarea></div>
-            <div class="field"><label>Fecha límite</label><input type="date" id="rsvpDeadline" value="2026-05-01"></div>
-            <div class="toggle-row"><span>Mostrar botón con link de confirmación</span>
-                <div class="toggle" data-field="rsvpLinkEnabled" onclick="toggleSwitch(this)"></div>
-            </div>
-            <div id="rsvpLinkFields">
-                <div class="field"><label>URL del enlace</label><input type="text" id="rsvpUrl"
-                        value="https://wa.me/123456789" placeholder="URL de formulario o WhatsApp"></div>
-                <div class="field"><label>Texto del botón</label><input type="text" id="rsvpLabel"
-                        value="CONFIRMAR ASISTENCIA"></div>
+            <div id="rsvpFields">
+                <div class="field"><label>Texto</label><textarea
+                        id="rsvpText">Por favor confirmá tu asistencia antes del 1 de Mayo.</textarea></div>
+                <div class="field"><label>Fecha límite</label><input type="date" id="rsvpDeadline" value="2026-05-01">
+                </div>
+                <div class="toggle-row"><span>Mostrar botón con link de confirmación</span>
+                    <div class="toggle" data-field="rsvpLinkEnabled" onclick="toggleSwitch(this)"></div>
+                </div>
+                <div id="rsvpLinkFields" style="display:none">
+                    <div class="field"><label>URL del enlace</label><input type="text" id="rsvpUrl"
+                            value="https://wa.me/123456789" placeholder="URL de formulario o WhatsApp"></div>
+                    <div class="field"><label>Texto del botón</label><input type="text" id="rsvpLabel"
+                            value="CONFIRMAR ASISTENCIA"></div>
+                </div>
             </div>
         </div>
 
@@ -805,62 +820,73 @@ Ascochinga, Córdoba</textarea></div>
             <div class="toggle-row"><span>Mostrar sección Redes Sociales</span>
                 <div class="toggle on" data-field="socialsEnabled" onclick="toggleSwitch(this)"></div>
             </div>
-            <div class="field"><label>Texto redes</label><textarea
-                    id="socialsBody">Además, antes del casamiento, recibirás un link donde podrás subir todas tus fotos y videos.</textarea>
+            <div id="socialsFields">
+                <div class="field"><label>Texto redes</label><textarea
+                        id="socialsBody">Además, antes del casamiento, recibirás un link donde podrás subir todas tus fotos y videos.</textarea>
+                </div>
+                <div class="field"><label>URL Instagram</label><input type="text" id="socialUrl"
+                        value="https://instagram.com"></div>
+                <div class="field"><label>Handle</label><input type="text" id="socialHandle" value="@tuboda"
+                        placeholder="Ej: @miboda2025"></div>
             </div>
-            <div class="field"><label>URL Instagram</label><input type="text" id="socialUrl"
-                    value="https://instagram.com"></div>
-            <div class="field"><label>Handle</label><input type="text" id="socialHandle" value="@tuboda"
-                    placeholder="Ej: @miboda2025"></div>
 
             <hr class="separator">
 
             <div class="toggle-row"><span>Mostrar sección Playlist</span>
                 <div class="toggle on" data-field="playlistEnabled" onclick="toggleSwitch(this)"></div>
             </div>
-            <div class="field"><label>Título playlist</label><input type="text" id="playlistHeading"
-                    value="Armemos la playlist juntos"></div>
-            <div class="field"><label>Texto playlist</label><input type="text" id="playlistBody"
-                    value="Agregá esas canciones que no pueden faltar en la fiesta."></div>
-            <div class="field"><label>URL Spotify Playlist</label><input type="text" id="playlistUrl"
-                    value="https://open.spotify.com/playlist/"></div>
+            <div id="playlistFields">
+                <div class="field"><label>Título playlist</label><input type="text" id="playlistHeading"
+                        value="Armemos la playlist juntos"></div>
+                <div class="field"><label>Texto playlist</label><input type="text" id="playlistBody"
+                        value="Agregá esas canciones que no pueden faltar en la fiesta."></div>
+                <div class="field"><label>URL Spotify Playlist</label><input type="text" id="playlistUrl"
+                        value="https://open.spotify.com/playlist/"></div>
+            </div>
 
             <hr class="separator">
 
             <div class="toggle-row"><span>Mostrar sección Info Útil</span>
                 <div class="toggle on" data-field="usefulInfoEnabled" onclick="toggleSwitch(this)"></div>
             </div>
-            <p class="step-label" style="margin-top:1rem">Cards de Info Útil</p>
-            <p class="desc" style="margin-bottom:1rem">Para cambiar el ícono, buscá en <a
-                    href="https://icon-sets.iconify.design/lucide/" target="_blank"
-                    style="color:var(--primary); font-weight:600;">Lucide Icons</a> y copiá el nombre. Asegurate de
-                anteponerle "lucide:". Ejemplo: si el ícono se llama "camera", escribí <code>lucide:camera</code>.</p>
-            <div class="dynamic-list" id="infoItems">
-                <div class="dynamic-item">
-                    <div class="row">
-                        <div class="field"><label>Ícono</label><input type="text" class="infoIcon" value="lucide:clock">
-                            <p class="hint"><a href="https://icon-sets.iconify.design/" target="_blank">Ver íconos</a>
-                            </p>
+            <div id="usefulInfoFields">
+                <p class="step-label" style="margin-top:1rem">Cards de Info Útil</p>
+                <p class="desc" style="margin-bottom:1rem">Para cambiar el ícono, buscá en <a
+                        href="https://icon-sets.iconify.design/lucide/" target="_blank"
+                        style="color:var(--primary); font-weight:600;">Lucide Icons</a> y copiá el nombre. Asegurate de
+                    anteponerle "lucide:". Ejemplo: si el ícono se llama "camera", escribí <code>lucide:camera</code>.
+                </p>
+                <div class="dynamic-list" id="infoItems">
+                    <div class="dynamic-item">
+                        <div class="row">
+                            <div class="field"><label>Ícono</label><input type="text" class="infoIcon"
+                                    value="lucide:clock">
+                                <p class="hint"><a href="https://icon-sets.iconify.design/" target="_blank">Ver
+                                        íconos</a>
+                                </p>
+                            </div>
+                            <div class="field"><label>Título</label><input type="text" class="infoTitle"
+                                    value="Duración">
+                            </div>
                         </div>
-                        <div class="field"><label>Título</label><input type="text" class="infoTitle" value="Duración">
+                        <div class="field"><label>Descripción</label><input type="text" class="infoDesc"
+                                value="La fiesta se extenderá hasta el amanecer."></div>
+                    </div>
+                    <div class="dynamic-item">
+                        <button class="btn-remove" onclick="this.parentElement.remove()">✕ Quitar</button>
+                        <div class="row">
+                            <div class="field"><label>Ícono</label><input type="text" class="infoIcon"
+                                    value="lucide:parking-circle"></div>
+                            <div class="field"><label>Título</label><input type="text" class="infoTitle"
+                                    value="Estacionamiento"></div>
                         </div>
+                        <div class="field"><label>Descripción</label><input type="text" class="infoDesc"
+                                value="Hay estacionamiento privado y vigilado gratuito en el lugar."></div>
                     </div>
-                    <div class="field"><label>Descripción</label><input type="text" class="infoDesc"
-                            value="La fiesta se extenderá hasta el amanecer."></div>
                 </div>
-                <div class="dynamic-item">
-                    <button class="btn-remove" onclick="this.parentElement.remove()">✕ Quitar</button>
-                    <div class="row">
-                        <div class="field"><label>Ícono</label><input type="text" class="infoIcon"
-                                value="lucide:parking-circle"></div>
-                        <div class="field"><label>Título</label><input type="text" class="infoTitle"
-                                value="Estacionamiento"></div>
-                    </div>
-                    <div class="field"><label>Descripción</label><input type="text" class="infoDesc"
-                            value="Hay estacionamiento privado y vigilado gratuito en el lugar."></div>
-                </div>
+                <button class="btn-add" onclick="addInfoItem()" style="margin-top:1rem; width:100%;">+ Agregar
+                    card</button>
             </div>
-            <button class="btn-add" onclick="addInfoItem()" style="margin-top:1rem; width:100%;">+ Agregar card</button>
         </div>
 
         <!-- ============ STEP 8: Open Graph ============ -->
@@ -994,8 +1020,14 @@ Ascochinga, Córdoba</textarea></div>
             const btnNext = document.getElementById('btnNext');
             btnNext.style.display = currentStep === TOTAL_STEPS - 1 ? 'none' : '';
 
-            // Toggle field visibility
-            document.getElementById('religiousFields').style.display = toggleState.religiousEnabled ? '' : 'none';
+            // Toggle field visibility dynamically for all sections
+            Object.keys(toggleState).forEach(field => {
+                const targetId = field.replace('Enabled', 'Fields');
+                const targetDiv = document.getElementById(targetId);
+                if (targetDiv) {
+                    targetDiv.style.display = toggleState[field] ? '' : 'none';
+                }
+            });
 
             if (currentStep === 7) updateOgPreview(); // Update mock on step 8
             if (currentStep === TOTAL_STEPS - 1) generateYaml();
@@ -1009,9 +1041,12 @@ Ascochinga, Córdoba</textarea></div>
             const field = el.dataset.field;
             toggleState[field] = !toggleState[field];
             el.classList.toggle('on', toggleState[field]);
-            // Show/hide religious fields
-            if (field === 'religiousEnabled') {
-                document.getElementById('religiousFields').style.display = toggleState[field] ? '' : 'none';
+
+            // Show/hide fields dynamically
+            const targetId = field.replace('Enabled', 'Fields');
+            const targetDiv = document.getElementById(targetId);
+            if (targetDiv) {
+                targetDiv.style.display = toggleState[field] ? '' : 'none';
             }
         }
 
