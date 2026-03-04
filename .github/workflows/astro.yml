@@ -93,16 +93,6 @@ jobs:
         uses: actions/checkout@v4
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
-          
-      - name: Update Repository Homepage URL
-        env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          PAGE_URL: ${{ needs.deploy.outputs.page_url }}
-        run: |
-          # Strip trailing slash from page_url for the API
-          URL="${PAGE_URL%/}"
-          gh repo edit ${{ github.repository }} --homepage "$URL"
-
       - name: Update README Links
         env:
           PAGE_URL: ${{ needs.deploy.outputs.page_url }}
