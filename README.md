@@ -54,9 +54,9 @@ Al final genera un archivo `wedding.yml` que descargás o copiás.
 4. Click en **"Commit changes"** → **"Commit directly to main"** → **"Commit changes"**
 
 **Fotos (arrastrá los archivos en GitHub):**
-- `public/media/hero/` → tu foto de bienvenida como **`bg.jpg`**
+- `public/media/hero/` → subí acá el archivo que seleccionaste en el Config Builder para la portada
 - `public/media/couple/` → tus fotos de historia con los nombres que te indicó el Config Builder (ej: `01.jpg`, `02.jpg`, etc.)
-- `public/media/og/` → la imagen que se ve al compartir el link en WhatsApp/redes como **`og.jpg`** (1200×630px recomendado)
+- `public/media/og/` → subí acá el archivo que seleccionaste en el Config Builder para WhatsApp/redes (1200×630px recomendado)
 
 > 💡 **Tip:** Podés arrastrar archivos directamente a la carpeta en GitHub para subirlos sin necesidad de usar Git.
 
@@ -118,9 +118,9 @@ src/
 └── styles/
 public/
 ├── media/
-│   ├── hero/        # Foto de bienvenida (bg.jpg)
+│   ├── hero/        # Foto de bienvenida (nombre configurable)
 │   ├── couple/      # Fotos historia (01.jpg, 02.jpg, ...)
-│   └── og/          # Imagen para redes sociales (og.jpg)
+│   └── og/          # Imagen para redes sociales (nombre configurable)
 └── config-builder/  # Herramienta de configuración visual
 ```
 

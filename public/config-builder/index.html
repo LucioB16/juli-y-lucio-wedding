@@ -819,8 +819,8 @@
                         onchange="onFileSelected(this, 'heroBgName'); updateHeroPreview();">
                     <span class="file-picker-name" id="heroBgName">bg.jpg</span>
                 </div>
-                <p class="hint">Subí este archivo a <code>public/media/hero/</code> en tu repositorio. Se renombrará
-                    automáticamente a <code>bg.jpg</code>.</p>
+                <p class="hint">Subí a esta carpeta el archivo que seleccionaste en el Config Builder.
+                </p>
             </div>
             <div class="hero-mock">
                 <div class="hero-mock-header">
@@ -1204,7 +1204,7 @@ Ascochinga, Córdoba</textarea></div>
                         onchange="onFileSelected(this, 'ogFileName'); updateOgPreview();">
                     <span class="file-picker-name" id="ogFileName">og.jpg</span>
                 </div>
-                <p class="hint">Subí este archivo a <code>public/media/og/</code> con el nombre <code>og.jpg</code>.
+                <p class="hint">Subí a esta carpeta el archivo que seleccionaste en el Config Builder.
                     Tamaño recomendado: 1200×630px.</p>
             </div>
 
@@ -1247,13 +1247,13 @@ Ascochinga, Córdoba</textarea></div>
                     </li>
                     <li><strong>Subí tus fotos</strong> arrastrándolas a las carpetas correspondientes en GitHub:
                         <ul style="margin-top:0.5rem; list-style: disc; padding-left:1.2rem;">
-                            <li><strong>Foto de bienvenida:</strong> subí tu imagen como <code>bg.jpg</code> a
+                            <li><strong>Foto de bienvenida:</strong> subí el archivo que seleccionaste en el Config Builder a
                                 <code>public/media/hero/</code>
                             </li>
                             <li><strong>Fotos de historia:</strong> subí tus fotos con los nombres indicados a
                                 <code>public/media/couple/</code>
                             </li>
-                            <li><strong>Imagen para redes:</strong> subí tu imagen como <code>og.jpg</code> a
+                            <li><strong>Imagen para redes:</strong> subí el archivo que seleccionaste en el Config Builder a
                                 <code>public/media/og/</code>
                             </li>
                         </ul>
@@ -1500,18 +1500,15 @@ Ascochinga, Córdoba</textarea></div>
 
             let y = '';
 
-            const ogFileNameDisplay = document.getElementById('ogFileName').textContent;
-            let ogFileNameExt = 'jpg';
-            if (ogFileNameDisplay !== 'og.jpg' && ogFileNameDisplay !== 'Ningún archivo') {
-                const parts = ogFileNameDisplay.split('.');
-                if (parts.length > 1) ogFileNameExt = parts.pop().toLowerCase();
-            }
-
+            const ogFileNameDisplay = document.getElementById('ogFileName').textContent?.trim();
+            const ogFileName = (!ogFileNameDisplay || ogFileNameDisplay === 'Ningún archivo')
+                ? 'og.jpg'
+                : ogFileNameDisplay;
             y += `site:\n`;
             y += `  pageTitle: ${esc(v('pageTitle'))}\n`;
             y += `  meta:\n`;
             y += `    description: ${esc(v('metaDesc'))}\n`;
-            y += `    ogImage: "/media/og/og.${ogFileNameExt}"\n\n`;
+            y += `    ogImage: "/media/og/${ogFileName}"\n\n`;
 
             y += `couple:\n`;
             y += `  person1:\n    name: ${esc(v('p1Name'))}\n`;
