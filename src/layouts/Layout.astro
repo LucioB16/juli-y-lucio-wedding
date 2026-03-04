@@ -34,11 +34,21 @@ const { title, description, ogImage } = Astro.props;
 
         <script>
             import { gsap } from "gsap";
-
             import { MorphSVGPlugin } from "gsap/MorphSVGPlugin";
             import { ScrollTrigger } from "gsap/ScrollTrigger";
 
             gsap.registerPlugin(MorphSVGPlugin, ScrollTrigger);
+
+            requestAnimationFrame(() => {
+                gsap.utils.toArray(".section").forEach((section: any) => {
+                    ScrollTrigger.create({
+                        trigger: section,
+                        start: "top 85%",
+                        toggleClass: "is-visible",
+                        once: true
+                    });
+                });
+            });
         </script>
     </body>
 </html>

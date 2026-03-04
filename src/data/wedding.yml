@@ -1,16 +1,16 @@
 site:
-  pageTitle: "[TITULO_DE_LA_INVITACION]"
-  baseUrl: "[URL_PAGES]"
+  pageTitle: "Nuestra Boda | Juli & Lucio"
+  baseUrl: "https://LucioB16.github.io/juli-y-lucio-wedding/"
   meta:
-    description: "[DESCRIPCION]"
-    ogImage: "/media/og/og.jpg"
+    description: "Estás invitado a celebrar con nosotros este momento tan especial."
+    ogImage: "/juli-y-lucio-wedding/media/og/og.jpg"
 
 couple:
   person1:
-    name: "[NOMBRE_1]"
+    name: "Julieta"
   person2:
-    name: "[NOMBRE_2]"
-  displayName: "[NOMBRE_1] & [NOMBRE_2]"
+    name: "Lucio"
+  displayName: "Julieta & Lucio"
   slug: "juli-y-lucio"
 
 locale:
@@ -44,10 +44,10 @@ sections:
 hero:
   enabled: true
   title: "¡Nos casamos!"
-  subtitle: "[NOMBRE_1] & [NOMBRE_2]"
-  dateDisplay: "[FECHA_LARGA]"
-  city: "[CIUDAD, Argentina]"
-  backgroundImage: "/media/hero/bg.jpg"
+  subtitle: "Julieta & Lucio"
+  dateDisplay: "21 de Junio de 2026"
+  city: "Córdoba, Argentina"
+  backgroundImage: "/juli-y-lucio-wedding/media/hero/bg.jpg"
 
 countdown:
   target: "2026-06-21T21:00:00Z"
@@ -61,40 +61,34 @@ events:
     kindLabel: "Ceremonia Civil"
     datetime: "2026-06-21T18:00:00Z"
     timeDisplay: "18:00 hs"
-    venueName: "[NOMBRE LUGAR CEREMONIA]"
+    venueName: "Registro Civil Central"
     addressLines:
-      - "[LINEA1]"
-      - "[LINEA2]"
-    mapsUrl: "[GOOGLE_MAPS_URL]"
+      - "Chacabuco 737"
+      - "Nueva Córdoba"
+    mapsUrl: "https://maps.app.goo.gl/"
   celebration:
     enabled: true
     kindLabel: "Fiesta"
     datetime: "2026-06-21T21:00:00Z"
     timeDisplay: "21:00 hs"
-    venueName: "[NOMBRE LUGAR FIESTA]"
+    venueName: "Estancia La Paz"
     addressLines:
-      - "[LINEA1]"
-      - "[LINEA2]"
-    mapsUrl: "[GOOGLE_MAPS_URL]"
+      - "Ruta E66 Km 41"
+      - "Ascochinga, Córdoba"
+    mapsUrl: "https://maps.app.goo.gl/"
 
 story:
   heading: "Nuestra historia"
   subheading: "Nosotros"
-  sentence: "[UNA FRASE CORTA QUE RESUMA SU HISTORIA]"
+  sentence: "Hace 5 años cruzamos miradas por primera vez en aquel viaje, y desde ese día supimos que queríamos caminar juntos para siempre. Las risas, los viajes y los mates compartidos nos trajeron hasta acá."
   photos:
-    - src: "/media/couple/01.jpg"
-      alt: "Foto 1"
-    - src: "/media/couple/02.jpg"
-      alt: "Foto 2"
-    - src: "/media/couple/03.jpg"
-      alt: "Foto 3"
-    - src: "/media/couple/04.jpg"
-      alt: "Foto 4"
+    - src: "/juli-y-lucio-wedding/media/couple/01.jpg"
+      alt: "Foto tu y yo"
 
 socials:
   items:
     - label: "Instagram"
-      handle: "@juliylucio"
+      handle: "@juliylucio_boda"
       url: "https://instagram.com"
 
 gifts:
@@ -103,11 +97,11 @@ gifts:
   buttonLabel: "Ver datos bancarios"
   bank:
     enabled: true
-    holderName: "[TITULAR]"
-    bankName: "[BANCO]"
-    alias: "[ALIAS]"
-    cbu: "[CBU]"
-    cuit: "[CUIT]"
+    holderName: "LUCIO PEREZ"
+    bankName: "Banco Galicia"
+    alias: "BODA.JULI.LUCIO"
+    cbu: "0070000000000000000000"
+    cuit: "20-12345678-9"
 
 dressCode:
   title: "Dress Code"
@@ -116,8 +110,8 @@ dressCode:
 
 rsvp:
   mode: "texto" # "texto" | "link"
-  text: "Por favor confirmá tu asistencia antes del [FECHA]."
-  url: "[RSVP_URL]"
+  text: "Por favor confirmá tu asistencia antes del 1 de Mayo."
+  url: "https://wa.me/123456789"
   deadline: "2026-05-01"
 
 calendar:
@@ -133,7 +127,7 @@ calendar:
 playlist:
   heading: "Armemos la playlist juntos"
   body: "Agregá esas canciones que no pueden faltar en la fiesta."
-  spotifyUrl: "[SPOTIFY_COLLAB_URL]"
+  spotifyUrl: "https://open.spotify.com/playlist/"
 
 usefulInfo:
   title: "Info útil"
@@ -145,4 +139,4 @@ usefulInfo:
     - enabled: true
       icon: "lucide:parking-circle"
       title: "Estacionamiento"
-      description: "Hay estacionamiento gratuito en el lugar."
+      description: "Hay estacionamiento privado y vigilado gratuito en el lugar."
