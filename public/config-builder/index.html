@@ -714,8 +714,9 @@ Ascochinga, Córdoba</textarea></div>
             <div class="dynamic-list" id="photoItems">
                 <div class="dynamic-item">
                     <div class="file-picker">
-                        <label class="file-picker-btn">Seleccionar foto</label>
-                        <input type="file" accept="image/*" onchange="onPhotoSelected(this)" style="display:none">
+                        <label class="file-picker-btn" for="photoFile01">Seleccionar foto</label>
+                        <input type="file" id="photoFile01" accept="image/*" onchange="onPhotoSelected(this)"
+                            style="display:none">
                         <span class="file-picker-name photoFileName">01.jpg</span>
                     </div>
                 </div>
