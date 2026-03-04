@@ -1,45 +1,217 @@
 ---
 import { getWeddingData } from "../data/weddingData";
 import Icon from "./Icon.astro";
-
-const { calendar, events } = getWeddingData();
-const ceremonyStart = events.ceremony.datetime
-    .replace(/[-:]/g, "")
-    .replace(/\.\d{3}Z$/, "Z");
-const ceremonyEnd = new Date(
-    new Date(events.ceremony.datetime).getTime() + 2 * 60 * 60 * 1000,
-)
-    .toISOString()
-    .replace(/[-:]/g, "")
-    .replace(/\.\d{3}Z$/, "Z");
-
-const celebStart = events.celebration.datetime
-    .replace(/[-:]/g, "")
-    .replace(/\.\d{3}Z$/, "Z");
-const celebEnd = new Date(
-    new Date(events.celebration.datetime).getTime() + 6 * 60 * 60 * 1000,
-)
-    .toISOString()
-    .replace(/[-:]/g, "")
-    .replace(/\.\d{3}Z$/, "Z");
-
-const createGCalUrl = (
-    text: string,
-    dates: string,
-    details: string,
-    location: string,
-) => {
-    return `https://calendar.google.com/calendar/render?action=TEMPLATE&text=${encodeURIComponent(text)}&dates=${dates}&details=${encodeURIComponent(details)}&location=${encodeURIComponent(location)}`;
-};
-
-const singleGCalUrl = createGCalUrl(
-    "Nuestra Boda",
-    `${ceremonyStart}/${celebEnd}`,
-    "¡Los esperamos para celebrar!",
-    events.celebration.venueName,
-);
 import Divider from "./Divider.astro";
 import SectionIcon from "./SectionIcon.astro";
+
+const { calendar, events, locale, couple } = getWeddingData();
+const timeZone = locale.timeZone || "UTC";
+const buildStamp = new Date()
+    .toISOString()
+    .replace(/[-:]/g, "")
+    .replace(/\.\d{3}Z$/, "Z");
+
+type EventKey = "religiousCeremony" | "ceremony" | "celebration";
+type WeddingEvent = (typeof events)[EventKey];
+
+interface CalendarItem {
+    id: EventKey | "single";
+    label: string;
+    title: string;
+    description: string;
+    location: string;
+    start: Date;
+    end: Date;
+}
+
+interface LinkItem {
+    label: string;
+    href: string;
+    fileName?: string;
+}
+
+const DURATION_MINUTES: Record<EventKey, number> = {
+    religiousCeremony: 120,
+    ceremony: 120,
+    celebration: 360,
+};
+
+function parseLocalDateTime(datetime: string): Date {
+    const parsed = new Date(datetime);
+    if (!Number.isNaN(parsed.getTime())) {
+        return parsed;
+    }
+
+    const match = datetime.match(
+        /^(\d{4})-(\d{2})-(\d{2})T(\d{2}):(\d{2})(?::(\d{2}))?/,
+    );
+
+    if (!match) {
+        return new Date(NaN);
+    }
+
+    const [, y, m, d, hh, mm, ss = "00"] = match;
+    return new Date(
+        Date.UTC(
+            Number(y),
+            Number(m) - 1,
+            Number(d),
+            Number(hh),
+            Number(mm),
+            Number(ss),
+        ),
+    );
+}
+
+function addMinutes(date: Date, minutes: number): Date {
+    return new Date(date.getTime() + minutes * 60 * 1000);
+}
+
+function toCompactDate(date: Date): string {
+    return date.toISOString().slice(0, 19).replace(/[-:]/g, "");
+}
+
+function normalizeIcsFileName(
+    fileName: string | undefined,
+    fallback: string,
+): string {
+    const candidate = fileName?.trim() || fallback;
+    return candidate.toLowerCase().endsWith(".ics")
+        ? candidate
+        : `${candidate}.ics`;
+}
+
+function escapeIcsText(value: string): string {
+    return value
+        .replace(/\\/g, "\\\\")
+        .replace(/\n/g, "\\n")
+        .replace(/,/g, "\\,")
+        .replace(/;/g, "\\;");
+}
+
+function buildLocation(event: WeddingEvent): string {
+    return [event.venueName, ...event.addressLines].filter(Boolean).join(", ");
+}
+
+function createGCalUrl(item: CalendarItem): string {
+    const dates = `${toCompactDate(item.start)}/${toCompactDate(item.end)}`;
+    return `https://calendar.google.com/calendar/render?action=TEMPLATE&text=${encodeURIComponent(item.title)}&dates=${dates}&details=${encodeURIComponent(item.description)}&location=${encodeURIComponent(item.location)}&ctz=${encodeURIComponent(timeZone)}`;
+}
+
+function createIcsContent(item: CalendarItem): string {
+    const start = toCompactDate(item.start);
+    const end = toCompactDate(item.end);
+    const uid = `${item.id}-${start}@altare`;
+    const escapedTimeZone = escapeIcsText(timeZone);
+
+    const lines = [
+        "BEGIN:VCALENDAR",
+        "VERSION:2.0",
+        "PRODID:-//Altare//Wedding Invitation//ES",
+        "CALSCALE:GREGORIAN",
+        "METHOD:PUBLISH",
+        `X-WR-CALNAME:${escapeIcsText(item.title)}`,
+        `X-WR-TIMEZONE:${escapedTimeZone}`,
+        "BEGIN:VEVENT",
+        `UID:${uid}`,
+        `DTSTAMP:${buildStamp}`,
+        `DTSTART;TZID=${escapedTimeZone}:${start}`,
+        `DTEND;TZID=${escapedTimeZone}:${end}`,
+        `SUMMARY:${escapeIcsText(item.title)}`,
+        `DESCRIPTION:${escapeIcsText(item.description)}`,
+        `LOCATION:${escapeIcsText(item.location)}`,
+        "END:VEVENT",
+        "END:VCALENDAR",
+    ];
+
+    return `${lines.join("\r\n")}\r\n`;
+}
+
+function createIcsDataUrl(item: CalendarItem): string {
+    return `data:text/calendar;charset=utf-8,${encodeURIComponent(createIcsContent(item))}`;
+}
+
+const coupleLabel = couple.displayName || "Nuestra Boda";
+
+const enabledEventItems: CalendarItem[] = ([
+    ["religiousCeremony", events.religiousCeremony],
+    ["ceremony", events.ceremony],
+    ["celebration", events.celebration],
+] as const)
+    .filter(([, event]) => event?.enabled)
+    .map(([id, event]) => {
+        const start = parseLocalDateTime(event.datetime);
+        const end = addMinutes(start, DURATION_MINUTES[id]);
+
+        return {
+            id,
+            label: event.kindLabel,
+            title: `${event.kindLabel} - ${coupleLabel}`,
+            description: `Te esperamos en ${event.venueName}.`,
+            location: buildLocation(event),
+            start,
+            end,
+        };
+    })
+    .filter(
+        (item) =>
+            !Number.isNaN(item.start.getTime()) &&
+            !Number.isNaN(item.end.getTime()),
+    );
+
+const singleEventItem: CalendarItem | undefined =
+    enabledEventItems.length === 0
+        ? undefined
+        : {
+              id: "single",
+              label: "Nuestra Boda",
+              title: `Nuestra Boda - ${coupleLabel}`,
+              description: "Los esperamos para celebrar.",
+              location:
+                  enabledEventItems.find((item) => item.id === "celebration")
+                      ?.location || enabledEventItems[0].location,
+              start: new Date(
+                  Math.min(...enabledEventItems.map((item) => item.start.getTime())),
+              ),
+              end: new Date(
+                  Math.max(...enabledEventItems.map((item) => item.end.getTime())),
+              ),
+          };
+
+const useMultiMode = calendar.mode !== "single";
+const itemsForLinks = useMultiMode
+    ? enabledEventItems
+    : singleEventItem
+      ? [singleEventItem]
+      : [];
+
+const googleLinks: LinkItem[] = calendar.googleCalendar.enabled
+    ? itemsForLinks.map((item) => ({
+          label: useMultiMode ? `Google ${item.label}` : "GOOGLE CALENDAR",
+          href: createGCalUrl(item),
+      }))
+    : [];
+
+const icsFileNames = {
+    single: normalizeIcsFileName(calendar.ics.fileNameSingle, "boda.ics"),
+    religiousCeremony: normalizeIcsFileName(
+        calendar.ics.fileNameReligiousCeremony,
+        "ceremonia-religiosa.ics",
+    ),
+    ceremony: normalizeIcsFileName(calendar.ics.fileNameCeremony, "ceremonia.ics"),
+    celebration: normalizeIcsFileName(
+        calendar.ics.fileNameCelebration,
+        "celebracion.ics",
+    ),
+};
+
+const icsLinks: LinkItem[] = calendar.ics.enabled
+    ? itemsForLinks.map((item) => ({
+          label: useMultiMode ? `Apple / Outlook ${item.label}` : "APPLE / OUTLOOK",
+          href: createIcsDataUrl(item),
+          fileName: icsFileNames[item.id],
+      }))
+    : [];
 ---
 
 <Divider type="small" />
@@ -50,7 +222,7 @@ import SectionIcon from "./SectionIcon.astro";
         <p
             class="text-xs md:text-sm tracking-[0.4em] font-sans uppercase text-primary opacity-80 mb-4"
         >
-            Agendá la fecha
+            Agenda la fecha
         </p>
 
         <h2
@@ -65,9 +237,9 @@ import SectionIcon from "./SectionIcon.astro";
         >
             <div class="flex flex-col sm:flex-row gap-4 justify-center w-full">
                 {
-                    calendar.googleCalendar.enabled && (
+                    googleLinks.map((link) => (
                         <a
-                            href={singleGCalUrl}
+                            href={link.href}
                             target="_blank"
                             rel="noopener noreferrer"
                             class="flex items-center justify-center gap-3 bg-primary text-white tracking-[0.2em] uppercase text-sm font-semibold py-4 px-8 hover:bg-opacity-90 transition-colors w-full sm:w-auto"
@@ -76,23 +248,31 @@ import SectionIcon from "./SectionIcon.astro";
                                 name="lucide:calendar-check"
                                 class="text-lg"
                             />
-                            <span>GOOGLE CALENDAR</span>
+                            <span>{link.label}</span>
                         </a>
-                    )
+                    ))
                 }
 
                 {
-                    calendar.ics.enabled && (
+                    icsLinks.map((link) => (
                         <a
-                            href="#"
+                            href={link.href}
+                            download={link.fileName}
                             class="flex items-center justify-center gap-3 border border-primary text-primary tracking-[0.2em] uppercase text-sm font-semibold py-4 px-8 hover:bg-primary hover:text-white transition-colors w-full sm:w-auto"
                         >
                             <Icon name="lucide:apple" class="text-lg" />
-                            <span>APPLE / OUTLOOK</span>
+                            <span>{link.label}</span>
                         </a>
-                    )
+                    ))
                 }
             </div>
+            {
+                googleLinks.length === 0 && icsLinks.length === 0 && (
+                    <p class="text-sm text-gray-600 mt-4">
+                        No hay eventos habilitados para agregar al calendario.
+                    </p>
+                )
+            }
         </div>
     </div>
 </section>

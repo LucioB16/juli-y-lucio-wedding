@@ -106,11 +106,12 @@ export interface WeddingData {
     };
   };
   calendar: {
-    mode: "single" | "two";
+    mode: "single" | "two" | "three";
     googleCalendar: { enabled: boolean };
     ics: {
       enabled: boolean;
       fileNameSingle: string;
+      fileNameReligiousCeremony?: string;
       fileNameCeremony: string;
       fileNameCelebration: string;
     };

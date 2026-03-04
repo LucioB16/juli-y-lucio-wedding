@@ -136,12 +136,13 @@ rsvp:
     label: "CONFIRMAR ASISTENCIA"
 
 calendar:
-  mode: "single" # "single" | "two"
+  mode: "single" # "single" | "two" | "three"
   googleCalendar:
     enabled: true
   ics:
     enabled: true
     fileNameSingle: "boda.ics"
+    fileNameReligiousCeremony: "ceremonia-religiosa.ics"
     fileNameCeremony: "ceremonia.ics"
     fileNameCelebration: "celebracion.ics"
 

@@ -851,35 +851,10 @@
             <!-- Zona horaria -->
             <div class="field">
                 <label>Zona horaria de los eventos</label>
-                <select id="eventTimezone" class="tz-select">
-                    <option value="America/Argentina/Buenos_Aires">UTC-3 Argentina (Buenos Aires)</option>
-                    <option value="America/Argentina/Cordoba" selected>UTC-3 Argentina (Córdoba)</option>
-                    <option value="America/Argentina/Mendoza">UTC-3 Argentina (Mendoza)</option>
-                    <option value="America/Montevideo">UTC-3 Uruguay (Montevideo)</option>
-                    <option value="America/Asuncion">UTC-4 Paraguay (Asunción)</option>
-                    <option value="America/Santiago">UTC-4 Chile (Santiago)</option>
-                    <option value="America/Caracas">UTC-4 Venezuela (Caracas)</option>
-                    <option value="America/La_Paz">UTC-4 Bolivia (La Paz)</option>
-                    <option value="America/Bogota">UTC-5 Colombia (Bogotá)</option>
-                    <option value="America/Lima">UTC-5 Perú (Lima)</option>
-                    <option value="America/Guayaquil">UTC-5 Ecuador (Guayaquil)</option>
-                    <option value="America/Panama">UTC-5 Panamá</option>
-                    <option value="America/Mexico_City">UTC-6 México (CDMX)</option>
-                    <option value="America/Monterrey">UTC-6 México (Monterrey)</option>
-                    <option value="America/Tijuana">UTC-8 México (Tijuana)</option>
-                    <option value="America/Costa_Rica">UTC-6 Costa Rica (San José)</option>
-                    <option value="America/El_Salvador">UTC-6 El Salvador (San Salvador)</option>
-                    <option value="America/Guatemala">UTC-6 Guatemala (Ciudad de Guatemala)</option>
-                    <option value="America/Honduras">UTC-6 Honduras (Tegucigalpa)</option>
-                    <option value="America/New_York">UTC-5 Estados Unidos (Este)</option>
-                    <option value="America/Chicago">UTC-6 Estados Unidos (Central)</option>
-                    <option value="America/Denver">UTC-7 Estados Unidos (Montaña)</option>
-                    <option value="America/Los_Angeles">UTC-8 Estados Unidos (Oeste)</option>
-                    <option value="Europe/Madrid">UTC+1 España (Madrid)</option>
-                    <option value="Europe/Barcelona">UTC+1 España (Barcelona)</option>
-                    <option value="Europe/London">UTC+0 Reino Unido (Londres)</option>
-                    <option value="UTC">UTC Tiempo Universal Coordinado</option>
+                <select id="eventTimezone" class="tz-select" data-default-tz="America/Argentina/Buenos_Aires">
+                    <option value="America/Argentina/Buenos_Aires">Cargando zonas horarias…</option>
                 </select>
+                <p class="hint">Mostramos una opción por huso horario (UTC) con una región/ciudad de referencia.</p>
             </div>
 
             <hr class="separator">
@@ -950,6 +925,9 @@ Ascochinga, Córdoba</textarea></div>
                 <div class="field"><label>URL Google Maps</label><input type="text" id="celebrationMaps"
                         value="https://maps.app.goo.gl/"></div>
             </div>
+            <p class="hint" style="margin-top:1rem">Debés habilitar al menos un evento para continuar.
+                En la página generada, la descarga para Google Calendar, Outlook o iOS va a crear 1, 2 o 3 archivos
+                según cuántos eventos tengas habilitados.</p>
         </div>
 
         <!-- ============ STEP 4: Story ============ -->
@@ -1294,6 +1272,24 @@ Ascochinga, Córdoba</textarea></div>
             usefulInfoEnabled: true,
         };
 
+        function getEnabledEventCount() {
+            return [toggleState.religiousEnabled, toggleState.ceremonyEnabled, toggleState.celebrationEnabled]
+                .filter(Boolean).length;
+        }
+
+        function getCalendarMode() {
+            const enabledCount = getEnabledEventCount();
+            if (enabledCount <= 1) return "single";
+            if (enabledCount === 2) return "two";
+            return "three";
+        }
+
+        function validateEventsSelection() {
+            if (getEnabledEventCount() > 0) return true;
+            alert('Tenés que habilitar al menos un evento (religiosa, civil o fiesta) para continuar.');
+            return false;
+        }
+
         // Init progress dots
         const bar = document.getElementById('progressBar');
         for (let i = 0; i < TOTAL_STEPS; i++) {
@@ -1327,9 +1323,22 @@ Ascochinga, Córdoba</textarea></div>
             if (currentStep === TOTAL_STEPS - 1) generateYaml();
         }
 
-        function nextStep() { if (currentStep < TOTAL_STEPS - 1) { currentStep++; updateUI(); window.scrollTo({ top: 0, behavior: 'smooth' }); } }
+        function nextStep() {
+            if (currentStep < TOTAL_STEPS - 1) {
+                if (currentStep === 2 && !validateEventsSelection()) return;
+                currentStep++;
+                updateUI();
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            }
+        }
         function prevStep() { if (currentStep > 0) { currentStep--; updateUI(); window.scrollTo({ top: 0, behavior: 'smooth' }); } }
-        function goToStep(i) { currentStep = i; updateUI(); window.scrollTo({ top: 0, behavior: 'smooth' }); }
+        function goToStep(i) {
+            const crossingEventsStepForward = currentStep <= 2 && i > 2;
+            if (crossingEventsStepForward && !validateEventsSelection()) return;
+            currentStep = i;
+            updateUI();
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
 
         function toggleSwitch(el) {
             const field = el.dataset.field;
@@ -1409,12 +1418,186 @@ Ascochinga, Córdoba</textarea></div>
 
         function esc(s) { return `"${s.replace(/\\/g, '\\\\').replace(/"/g, '\\"')}"`; }
 
-        // Build ISO datetime from date + time + timezone
+        function getTimeZoneOffsetMinutes(date, timeZone) {
+            const formatter = new Intl.DateTimeFormat('en-US', {
+                timeZone,
+                year: 'numeric',
+                month: '2-digit',
+                day: '2-digit',
+                hour: '2-digit',
+                minute: '2-digit',
+                second: '2-digit',
+                hour12: false,
+            });
+
+            const map = {};
+            formatter.formatToParts(date).forEach((part) => {
+                if (part.type !== 'literal') map[part.type] = part.value;
+            });
+
+            const asUtc = Date.UTC(
+                Number(map.year),
+                Number(map.month) - 1,
+                Number(map.day),
+                Number(map.hour),
+                Number(map.minute),
+                Number(map.second),
+            );
+
+            return Math.round((asUtc - date.getTime()) / 60000);
+        }
+
+        function formatOffset(offsetMinutes) {
+            const sign = offsetMinutes >= 0 ? '+' : '-';
+            const absolute = Math.abs(offsetMinutes);
+            const hh = String(Math.floor(absolute / 60)).padStart(2, '0');
+            const mm = String(absolute % 60).padStart(2, '0');
+            return `${sign}${hh}:${mm}`;
+        }
+
+        function formatZoneReference(zone) {
+            if (!zone || zone === 'UTC') return 'Tiempo Universal';
+
+            const parts = zone.split('/');
+            if (parts.length >= 3) {
+                const country = parts[1].replace(/_/g, ' ');
+                const city = parts[2].replace(/_/g, ' ');
+                return `${country} (${city})`;
+            }
+
+            if (parts.length === 2) {
+                return parts[1].replace(/_/g, ' ');
+            }
+
+            return zone.replace(/_/g, ' ');
+        }
+
+        function initTimeZonePicker() {
+            const select = document.getElementById('eventTimezone');
+            if (!select) return;
+
+            const preferredTz = select.dataset.defaultTz || 'America/Argentina/Buenos_Aires';
+            const year = new Date().getUTCFullYear();
+            const referenceDates = [
+                new Date(Date.UTC(year, 0, 15, 12, 0, 0)),
+                new Date(Date.UTC(year, 6, 15, 12, 0, 0)),
+            ];
+
+            const supportedZones =
+                typeof Intl.supportedValuesOf === 'function'
+                    ? Intl.supportedValuesOf('timeZone')
+                    : ['UTC', preferredTz];
+
+            const offsetToZone = new Map();
+            const offsetReferences = new Map([
+                [-660, 'Pacífico Sur (Samoa)'],
+                [-600, 'US/Canada Hawai-Aleutian (Honolulu)'],
+                [-570, 'Polinesia Francesa (Marquesas)'],
+                [-540, 'US/Canada Alaska (Anchorage)'],
+                [-480, 'US/Canada Pacific (Los Ángeles/Vancouver)'],
+                [-420, 'US/Canada Mountain (Denver/Calgary)'],
+                [-360, 'US/Canada Central (Chicago/Winnipeg)'],
+                [-300, 'US/Canada Eastern (Nueva York/Toronto)'],
+                [-240, 'Sudamérica Norte (Caracas/La Paz)'],
+                [-210, 'Canadá Atlantic (Terranova)'],
+                [-180, 'Argentina/Uruguay (Buenos Aires/Montevideo)'],
+                [-120, 'Brasil (Noronha)'],
+                [-60, 'Atlántico (Azores)'],
+                [0, 'Europa Occidental (Londres/Lisboa)'],
+                [60, 'Europa Central (Madrid/París/Berlín)'],
+                [120, 'Europa Oriental (Atenas/Bucarest)'],
+                [180, 'Europa Oriental+ / Turquía (Estambul)'],
+                [210, 'Irán (Teherán)'],
+                [240, 'EAU (Dubái)'],
+                [270, 'Afganistán (Kabul)'],
+                [300, 'Pakistán (Karachi)'],
+                [330, 'India (Nueva Delhi)'],
+                [345, 'Nepal (Katmandú)'],
+                [360, 'Bangladés (Daca)'],
+                [390, 'Myanmar (Yangón)'],
+                [420, 'Tailandia (Bangkok)'],
+                [480, 'China (Shanghái)'],
+                [525, 'Australia (Eucla)'],
+                [540, 'Japón (Tokio)'],
+                [570, 'Australia (Darwin)'],
+                [600, 'Australia (Sídney)'],
+                [630, 'Australia (Lord Howe)'],
+                [660, 'Islas Salomón'],
+                [720, 'Nueva Zelanda (Auckland)'],
+                [765, 'Nueva Zelanda (Chatham)'],
+                [780, 'Tonga'],
+                [840, 'Kiribati (Kiritimati)'],
+            ]);
+
+            const pushOffset = (zone, date) => {
+                try {
+                    const offset = getTimeZoneOffsetMinutes(date, zone);
+                    if (!offsetToZone.has(offset)) {
+                        offsetToZone.set(offset, zone);
+                    }
+                } catch (_) {
+                    // Ignore unsupported timezone values in the current runtime.
+                }
+            };
+
+            supportedZones.sort().forEach((zone) => {
+                referenceDates.forEach((date) => pushOffset(zone, date));
+            });
+
+            select.innerHTML = '';
+            const sortedOffsets = Array.from(offsetToZone.keys()).sort((a, b) => a - b);
+            sortedOffsets.forEach((offset) => {
+                const option = document.createElement('option');
+                const representativeZone = offsetToZone.get(offset);
+                const reference = offsetReferences.get(offset) || formatZoneReference(representativeZone);
+
+                option.value = representativeZone;
+                option.textContent = `UTC${formatOffset(offset)} — ${reference}`;
+                option.title = representativeZone;
+                select.appendChild(option);
+            });
+
+            if (Array.from(select.options).some((opt) => opt.value === preferredTz)) {
+                select.value = preferredTz;
+                return;
+            }
+
+            const preferredOffset = getTimeZoneOffsetMinutes(referenceDates[0], preferredTz);
+            if (offsetToZone.has(preferredOffset)) {
+                select.value = offsetToZone.get(preferredOffset);
+                return;
+            }
+
+            if (select.options.length > 0) {
+                select.selectedIndex = 0;
+            }
+        }
+
+        // Build ISO datetime from date + time + selected IANA timezone
         function buildDatetime(dateId, timeId) {
             const d = v(dateId);
             const t = v(timeId);
+            const tz = v('eventTimezone') || 'UTC';
             if (!d || !t) return '';
-            return `${d}T${t}:00`;
+
+            const [year, month, day] = d.split('-').map(Number);
+            const [hour, minute] = t.split(':').map(Number);
+
+            // First approximation: treat local wall time as UTC.
+            const utcGuess = Date.UTC(year, month - 1, day, hour, minute, 0);
+
+            // Convert wall time in selected timezone to an absolute instant.
+            const offset1 = getTimeZoneOffsetMinutes(new Date(utcGuess), tz);
+            let utcInstant = utcGuess - offset1 * 60 * 1000;
+
+            // Re-check once for DST boundaries.
+            const offset2 = getTimeZoneOffsetMinutes(new Date(utcInstant), tz);
+            if (offset2 !== offset1) {
+                utcInstant -= (offset2 - offset1) * 60 * 1000;
+            }
+
+            const finalOffset = getTimeZoneOffsetMinutes(new Date(utcInstant), tz);
+            return `${d}T${t}:00${formatOffset(finalOffset)}`;
         }
 
         function buildTimeDisplay(timeId) {
@@ -1632,8 +1815,9 @@ Ascochinga, Córdoba</textarea></div>
             y += `  deadline: "${v('rsvpDeadline')}"\n`;
             y += `  link:\n    enabled: ${toggleState.rsvpLinkEnabled}\n    url: "${v('rsvpUrl')}"\n    label: ${esc(v('rsvpLabel'))}\n\n`;
 
-            y += `calendar:\n  mode: "single"\n  googleCalendar:\n    enabled: true\n  ics:\n    enabled: true\n`;
-            y += `    fileNameSingle: "boda.ics"\n    fileNameCeremony: "ceremonia.ics"\n    fileNameCelebration: "celebracion.ics"\n\n`;
+            const calendarMode = getCalendarMode();
+            y += `calendar:\n  mode: "${calendarMode}"\n  googleCalendar:\n    enabled: true\n  ics:\n    enabled: true\n`;
+            y += `    fileNameSingle: "boda.ics"\n    fileNameReligiousCeremony: "ceremonia-religiosa.ics"\n    fileNameCeremony: "ceremonia.ics"\n    fileNameCelebration: "celebracion.ics"\n\n`;
 
             y += `playlist:\n  heading: ${esc(v('playlistHeading'))}\n  body: ${esc(v('playlistBody'))}\n  spotifyUrl: "${v('playlistUrl')}"\n\n`;
 
@@ -1665,6 +1849,7 @@ Ascochinga, Córdoba</textarea></div>
             });
         }
 
+        initTimeZonePicker();
         updateHeroPreview();
         updateStoryPreview();
     </script>
