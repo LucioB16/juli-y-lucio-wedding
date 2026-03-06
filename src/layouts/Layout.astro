@@ -1,8 +1,9 @@
 ---
 import "../styles/global.css";
 import Footer from "../components/Footer.astro";
+import DemoThemeSwitcher from "../components/DemoThemeSwitcher.astro";
 import { getWeddingData } from "../data/weddingData";
-import { resolveTheme, toThemeCssVars } from "../theme/themes";
+import { themes, resolveTheme, toThemeCssVars, toThemeCssVarMap } from "../theme/themes";
 import { resolveAssetPath } from "../utils/resolveAssetPath";
 
 const { title, description, ogImage } = Astro.props;
@@ -17,6 +18,13 @@ const ogImageUrl = ogImagePath
 const data = getWeddingData();
 const activeTheme = resolveTheme(data.theme?.id);
 const themeStyle = toThemeCssVars(activeTheme);
+const demoThemeSwitcherEnabled = data.demo?.themeSwitcher === true;
+const demoThemes = themes.map((theme) => ({
+    id: theme.id,
+    name: theme.name,
+    concept: theme.concept,
+    vars: toThemeCssVarMap(theme),
+}));
 ---
 
 <!doctype html>
@@ -43,7 +51,7 @@ const themeStyle = toThemeCssVars(activeTheme);
             src="https://code.iconify.design/iconify-icon/1.0.7/iconify-icon.min.js"
         ></script>
     </head>
-    <body data-theme={activeTheme.id} style={themeStyle}>
+    <body data-theme={activeTheme.id} data-demo-theme-switcher={demoThemeSwitcherEnabled ? "true" : "false"} style={themeStyle}>
         <noscript>
             <style>
                 /* When JS is disabled, reveal section content immediately so the page is usable. */
@@ -58,6 +66,11 @@ const themeStyle = toThemeCssVars(activeTheme);
         </noscript>
         <slot />
         <Footer />
+        <DemoThemeSwitcher
+            enabled={demoThemeSwitcherEnabled}
+            activeThemeId={activeTheme.id}
+            themes={demoThemes}
+        />
 
         <script>
             import { gsap } from "gsap";

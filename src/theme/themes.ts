@@ -1,4 +1,4 @@
-﻿import themesRaw from "./themes.json?raw";
+import themesRaw from "./themes.json?raw";
 import type { ThemeDefinition } from "./theme.types";
 
 export const DEFAULT_THEME_ID = "jardin-clasico";
@@ -7,18 +7,12 @@ export const themes = JSON.parse(themesRaw) as ThemeDefinition[];
 
 const themeById = new Map(themes.map((theme) => [theme.id, theme]));
 
-export function resolveTheme(themeId?: string): ThemeDefinition {
-    if (themeId && themeById.has(themeId)) {
-        return themeById.get(themeId) as ThemeDefinition;
-    }
+export type ThemeCssVarMap = Record<string, string>;
 
-    return (themeById.get(DEFAULT_THEME_ID) || themes[0]) as ThemeDefinition;
-}
-
-export function toThemeCssVars(theme: ThemeDefinition): string {
+function buildThemeCssVarMap(theme: ThemeDefinition): ThemeCssVarMap {
     const { fonts, colors } = theme;
 
-    const vars: Record<string, string> = {
+    return {
         "--font-sans": fonts.sans,
         "--font-display": fonts.display,
         "--color-primary": colors.primary,
@@ -43,6 +37,22 @@ export function toThemeCssVars(theme: ThemeDefinition): string {
         "--ornament-3": colors.ornament3,
         "--ornament-footer": colors.ornamentFooter,
     };
+}
+
+export function resolveTheme(themeId?: string): ThemeDefinition {
+    if (themeId && themeById.has(themeId)) {
+        return themeById.get(themeId) as ThemeDefinition;
+    }
+
+    return (themeById.get(DEFAULT_THEME_ID) || themes[0]) as ThemeDefinition;
+}
+
+export function toThemeCssVarMap(theme: ThemeDefinition): ThemeCssVarMap {
+    return buildThemeCssVarMap(theme);
+}
+
+export function toThemeCssVars(theme: ThemeDefinition): string {
+    const vars = buildThemeCssVarMap(theme);
 
     return Object.entries(vars)
         .map(([key, value]) => `${key}: ${value}`)

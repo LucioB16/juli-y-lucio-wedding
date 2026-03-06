@@ -22,6 +22,9 @@ export interface WeddingData {
   theme?: {
     id?: string;
   };
+  demo?: {
+    themeSwitcher?: boolean;
+  };
   sections: Record<string, { enabled: boolean }>;
   hero: {
     enabled: boolean;

@@ -17,6 +17,9 @@ locale:
 
 theme:
   id: "jardin-clasico"
+
+demo:
+  themeSwitcher: true
 sections:
   countdown:
     enabled: true
