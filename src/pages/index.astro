@@ -29,7 +29,7 @@ const data = getWeddingData();
       <Ceremony
         eventKey="religiousCeremony"
         dividerType="flower"
-        bgClass="bg-white"
+        bgClass="bg-surface"
       />
     )
   }
@@ -38,7 +38,7 @@ const data = getWeddingData();
       <Ceremony
         eventKey="ceremony"
         dividerType="small"
-        bgClass="bg-[#EEF0EC]"
+        bgClass="bg-surface-alt"
       />
     )
   }
@@ -52,3 +52,6 @@ const data = getWeddingData();
   {data.sections.playlist.enabled && <Playlist />}
   {data.sections.usefulInfo.enabled && <UsefulInfo />}
 </Layout>
+
+
+

@@ -19,6 +19,9 @@ export interface WeddingData {
     language: string;
     timeZone: string;
   };
+  theme?: {
+    id?: string;
+  };
   sections: Record<string, { enabled: boolean }>;
   hero: {
     enabled: boolean;
