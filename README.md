@@ -151,7 +151,7 @@ scripts/
 
 ---
 
-## � Créditos y licencia
+## 📜 Créditos y licencia
 
 Este proyecto está basado en [**SaidYes**](https://github.com/roicort/saidyes) por [@roicort](https://github.com/roicort), distribuido bajo la licencia **GNU Affero General Public License v3.0 (AGPL-3.0)**.
 
