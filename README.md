@@ -1,40 +1,114 @@
 # Altare - Wedding Invitation Template
 
-English | [Español](./README.es.md)
+English | [Espanol](./README.es.md)
 
-Elegant static wedding invitation template powered by Astro + Tailwind v4, with a visual config builder.
+Elegant, static wedding invitation template powered by Astro + Tailwind v4, with a visual config builder.
 
-- Live demo: https://luciob16.github.io/Altare/
-- Config builder: https://luciob16.github.io/Altare/config-builder/
+[![Use this template](https://img.shields.io/badge/Use_this_template-238636?style=for-the-badge&logo=github&logoColor=white)](https://github.com/LucioB16/Altare/generate)
+[![Live demo](https://img.shields.io/badge/Live_demo-5A7156?style=for-the-badge)](https://luciob16.github.io/Altare/)
+[![Config Builder](https://img.shields.io/badge/Config_Builder-3C5A7A?style=for-the-badge)](https://luciob16.github.io/Altare/config-builder/)
 
-## Quick Start
+---
 
-1. Click **Use this template** on GitHub and create your own repository.
-2. In your repo, go to **Settings -> Pages** and select **GitHub Actions**.
-3. Open the Config Builder, choose your site language, and complete all steps.
-4. Replace `src/data/wedding.yml` with the generated YAML and upload your images:
-   - `public/media/hero/`
-   - `public/media/couple/`
-   - `public/media/og/`
+## Create Your Invitation in 4 Steps
+
+### Step 1: Create your repository
+
+Click **Use this template** and create your own GitHub repository.
+
+Important: your final invitation URL is based on your GitHub user + repo name.
+Example: `https://mariaj.github.io/my-wedding/`
+
+### Step 2: Enable GitHub Pages
+
+1. Open **Settings -> Pages** in your repository.
+2. In **Source**, choose **GitHub Actions**.
+
+### Step 3: Configure your invitation
+
+Use the visual Config Builder:
+
+[![Open Config Builder](https://img.shields.io/badge/Open_Config_Builder-5A7156?style=for-the-badge)](https://luciob16.github.io/Altare/config-builder/)
+
+The builder guides you through couple data, visual theme, events, photos, gifts, dress code, RSVP, socials, playlist, useful info cards, and OG/share image.
+
+### Step 4: Upload YAML and photos
+
+Quick links (inside your repo):
+
+- [Open `wedding.yml`](./src/data/wedding.yml)
+- [Open hero folder (`public/media/hero/`)](./public/media/hero/)
+- [Open story folder (`public/media/couple/`)](./public/media/couple/)
+- [Open social image folder (`public/media/og/`)](./public/media/og/)
+
+`wedding.yml`:
+
+1. Open `wedding.yml`.
+2. Click the pencil icon.
+3. Replace content with your generated YAML.
+4. Commit changes.
+
+Photos:
+
+- `public/media/hero/` -> upload selected hero photo.
+- `public/media/couple/` -> upload story photos with the exact selected filenames.
+- `public/media/og/` -> upload share image (recommended 1200x630).
 
 Your site will be published at:
 `https://YOUR_USER.github.io/YOUR_REPO/`
 
-## Language Behavior
+---
 
-- The builder saves the selected language as `site.language` in `wedding.yml`.
-- Supported languages are auto-discovered from `src/i18n/locales/*.json` (`en` is default; this repo includes `en` and `es`).
+## Language and i18n
+
+- The builder saves selected language as `site.language`.
+- Supported locales are auto-discovered from `src/i18n/locales/*.json`.
+- Default locale is `en`.
 - Backward compatibility:
-  - If `site.language` is missing, the app falls back to `locale.language`.
-  - If both are missing/unknown, it falls back to `en`.
-- User repos generated from this template are **monolingual by default** (only the selected language is published).
-- Template/demo repos can expose extra demo locales via `demo.locales` (for example `['es']`).
+  - If `site.language` is missing, fallback is `locale.language`.
+  - If both are missing/unknown, fallback is `en`.
+- Generated user repos are monolingual by default.
+- Demo repos can expose extra locale routes through `demo.locales`.
+
+### Add a New Language (Quick)
+
+1. Duplicate `src/i18n/locales/en.json` to `src/i18n/locales/<code>.json` (example: `fr.json`).
+2. Translate keys and set `contentDefaults.locale.language` (example: `fr-FR`).
+3. Run:
+
+```bash
+bun run sync:themes
+bun run build
+```
+
+The builder locale selector and site locale resolution will pick the new locale automatically.
+
+---
+
+## Features
+
+- Responsive layout for mobile, tablet, and desktop.
+- Visual config builder (no coding needed).
+- Modular sections with enable/disable toggles.
+- Optional religious ceremony, civil ceremony, and celebration blocks.
+- Story gallery (1-4 photos).
+- Gifts section with optional bank data.
+- Countdown, RSVP, socials, playlist, and useful info cards.
+- Static deployment on GitHub Pages.
 
 ## Theming
 
-- Theme is configured with `theme.id`.
-- The builder and site share the same theme catalog.
-- If `theme.id` is missing, it falls back to `jardin-clasico`.
+- Shared token-based theme system for site and builder.
+- Available themes:
+  - `jardin-clasico` (default)
+  - `marfil-editorial`
+  - `botanica-nocturna`
+  - `rosa-antiguo`
+  - `galeria-moderna`
+- `theme.id` is optional; fallback is `jardin-clasico`.
+- Theme changes aesthetics only (colors, fonts, ornaments), without changing layout logic.
+
+---
 
 ## Local Development
 
@@ -43,14 +117,18 @@ bun install
 bun run dev
 ```
 
-Useful commands:
+### Commands
 
-- `bun run sync:themes` - sync themes/fonts/locales to the builder assets
-- `bun run dev` - run Astro dev server
-- `bun run build` - production build to `dist/`
-- `bun run preview` - preview the production build
+| Command | Action |
+| :-- | :-- |
+| `bun install` | Install dependencies |
+| `bun run sync:themes` | Sync themes, fonts, and locales to builder assets |
+| `bun run dev` | Start Astro dev server |
+| `bun run build` | Build production output to `dist/` |
+| `bun run preview` | Preview production build locally |
+| `bun astro ...` | Run Astro CLI commands |
 
-## Project Structure
+### Project Structure
 
 ```text
 src/
@@ -63,28 +141,24 @@ src/
     messages.ts
     site.ts
     locales/
+  theme/
   layouts/
   pages/
-  theme/
+  styles/
 public/
   media/
+    hero/
+    couple/
+    og/
   config-builder/
 scripts/
   sync-themes.mjs
 ```
 
-## Add a New Language (Quick)
+---
 
-1. Duplicate `src/i18n/locales/en.json` to `src/i18n/locales/<code>.json` (for example `fr.json`).
-2. Translate the new file and set `contentDefaults.locale.language` (for example `fr-FR`).
-3. Run `bun run sync:themes` and then `bun run build`.
+## Credits and License
 
-After that, the builder language dropdown and site locale resolution pick the new locale automatically.
-For bilingual demo routes, add the locale to `demo.locales` in `src/data/wedding.yml`.
+Based on [SaidYes](https://github.com/roicort/saidyes) by [@roicort](https://github.com/roicort), under AGPL-3.0.
 
-## License and Credits
-
-Based on [SaidYes](https://github.com/roicort/saidyes) by [@roicort](https://github.com/roicort), licensed under AGPL-3.0.
-
-This fork keeps the same AGPL-3.0 license. See [LICENSE](./LICENSE).
-
+This fork keeps AGPL-3.0. See [LICENSE](./LICENSE).
