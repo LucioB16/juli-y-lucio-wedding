@@ -1,4 +1,4 @@
-# Altare - Template de Invitacion de Boda
+﻿# Altare - Template de Invitacion de Boda
 
 [English](./README.md) | Espanol
 
@@ -30,7 +30,22 @@ Usa el Config Builder visual:
 
 [![Abrir Config Builder](https://img.shields.io/badge/Abrir_Config_Builder-5A7156?style=for-the-badge)](https://luciob16.github.io/Altare/config-builder/)
 
-El builder te guia paso a paso para configurar pareja, tema visual, eventos, fotos, regalos, dress code, RSVP, redes, playlist, cards utiles e imagen OG/compartir.
+El Config Builder te guia paso a paso para configurar:
+
+- 👫 Nombres de la pareja
+- 🎭 Tema visual (5 temas con preview en vivo)
+- 📅 Fechas y horarios con selectores visuales + zona horaria
+- ⛪ Ceremonia religiosa, civil y fiesta (cada una con toggle)
+- 📸 Fotos de portada e historia (1-4 fotos)
+- 🖼️ Imagen para compartir en WhatsApp/redes (Open Graph)
+- 🎁 Regalos y datos bancarios (con opcion de ocultar)
+- 👔 Codigo de vestimenta (con aviso de novia configurable)
+- ✉️ Confirmacion de asistencia (fecha limite + link opcional)
+- 🎵 Playlist de Spotify (opcional)
+- 📱 Redes sociales (opcional)
+- ℹ️ Cards de informacion util (podes dejar solo una o agregar varias)
+
+Al final genera un archivo `wedding.yml` que descargas o copias.
 
 ### Paso 4: Subir YAML y fotos
 
@@ -39,23 +54,34 @@ Accesos rapidos (desde tu repo):
 - [Abrir `wedding.yml`](./src/data/wedding.yml)
 - [Abrir carpeta portada (`public/media/hero/`)](./public/media/hero/)
 - [Abrir carpeta historia (`public/media/couple/`)](./public/media/couple/)
-- [Abrir carpeta imagen redes (`public/media/og/`)](./public/media/og/)
+- [Abrir carpeta de imagen para WhatsApp/redes (`public/media/og/`)](./public/media/og/)
 
 `wedding.yml`:
 
 1. Abre `wedding.yml`.
 2. Haz click en el lapiz.
 3. Reemplaza el contenido con tu YAML generado.
-4. Commit de cambios.
+4. Haz click en **Commit changes**.
+5. Si GitHub no te deja commit directo por reglas, elige **Create a new branch** y despues **Create pull request**.
 
 Fotos:
 
+1. Entra a cada carpeta (`hero`, `couple`, `og`).
+2. Haz click en **Add file** (arriba a la derecha).
+3. Elige **Upload files**.
+4. Selecciona los archivos y haz **Commit changes**.
+
 - `public/media/hero/` -> sube la foto de portada seleccionada.
-- `public/media/couple/` -> sube fotos de historia con los mismos nombres seleccionados.
-- `public/media/og/` -> sube imagen para compartir (recomendado 1200x630).
+- `public/media/couple/` -> sube las fotos de historia con los mismos nombres que seleccionaste.
+- `public/media/og/` -> sube la imagen para WhatsApp/redes (recomendado 1200x630).
+
+Tip: tambien puedes arrastrar archivos directamente en la carpeta abierta de GitHub.
 
 Tu sitio se publicara en:
 `https://TU_USUARIO.github.io/TU_REPO/`
+
+La URL de tu invitacion se forma con tu usuario de GitHub + el nombre del repositorio.
+Ejemplo: si tu usuario es `mariaj` y tu repo es `mi-boda`, la URL sera `https://mariaj.github.io/mi-boda/`.
 
 ---
 
@@ -87,14 +113,17 @@ El selector de idioma del builder y la resolucion del sitio tomaran ese locale a
 
 ## Features
 
-- Responsive para mobile, tablet y desktop.
-- Builder visual para configurar sin codigo.
-- Secciones modulares con toggles on/off.
-- Ceremonia religiosa, civil y celebracion opcionales.
-- Galeria de historia (1-4 fotos).
-- Regalos con datos bancarios opcionales.
-- Cuenta regresiva, RSVP, redes, playlist e info util.
-- Deploy estatico en GitHub Pages.
+- 📱 **Responsive** — Se ve perfecto en celular, tablet y desktop
+- 🎨 **Diseno premium** — Tipografia elegante, SVGs artesanales, scroll cuidado entre secciones
+- ⚙️ **100% configurable** — Todo se edita desde un solo archivo YAML
+- 🔒 **Sin servidor** — Se despliega gratis en GitHub Pages
+- 🧩 **Secciones modulares** — Activa o desactiva cualquier seccion
+- ⛪ **Ceremonia religiosa** — Seccion opcional, identica en formato a la civil
+- 🖼️ **Galeria inteligente** — 1 a 4 fotos con layout automatico
+- 🏦 **Datos bancarios** — Con toggle para mostrar/ocultar
+- 📊 **Cuenta regresiva** — Actualizacion en tiempo real
+- 🔧 **Config Builder** — Herramienta visual para generar configuracion sin codigo
+- 🌐 **i18n escalable** — Idioma elegido por builder + fallback a `en` + alta simple de nuevos locales
 
 ## Novedades de theming
 
@@ -159,6 +188,13 @@ scripts/
 
 ## Creditos y licencia
 
-Basado en [SaidYes](https://github.com/roicort/saidyes) por [@roicort](https://github.com/roicort), bajo AGPL-3.0.
+Este proyecto esta basado en [**SaidYes**](https://github.com/roicort/saidyes) por [@roicort](https://github.com/roicort), distribuido bajo la licencia **GNU Affero General Public License v3.0 (AGPL-3.0)**.
 
-Este fork mantiene AGPL-3.0. Ver [LICENSE](./LICENSE).
+Este fork mantiene la misma licencia. Puedes usar, modificar y distribuir este codigo siempre que:
+
+- Mantengas la atribucion al proyecto original
+- Distribuyas tus modificaciones bajo la misma licencia AGPL-3.0
+
+Ver [LICENSE](./LICENSE) para mas detalles.
+
+Hecho con ❤️ para que tu dia especial sea aun mas especial.

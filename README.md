@@ -1,4 +1,4 @@
-# Altare - Wedding Invitation Template
+﻿# Altare - Wedding Invitation Template
 
 English | [Espanol](./README.es.md)
 
@@ -30,7 +30,22 @@ Use the visual Config Builder:
 
 [![Open Config Builder](https://img.shields.io/badge/Open_Config_Builder-5A7156?style=for-the-badge)](https://luciob16.github.io/Altare/config-builder/)
 
-The builder guides you through couple data, visual theme, events, photos, gifts, dress code, RSVP, socials, playlist, useful info cards, and OG/share image.
+The Config Builder guides you step by step to configure:
+
+- 👫 Couple names
+- 🎭 Visual theme (5 themes with live preview)
+- 📅 Dates and times with visual pickers + timezone
+- ⛪ Religious ceremony, civil ceremony, and celebration (each with its own toggle)
+- 📸 Hero and story photos (1-4 photos)
+- 🖼️ WhatsApp/social sharing image (Open Graph)
+- 🎁 Gifts and bank details (with hide/show option)
+- 👔 Dress code (with configurable bride notice)
+- ✉️ RSVP (deadline + optional link)
+- 🎵 Spotify playlist (optional)
+- 📱 Social media (optional)
+- ℹ️ Useful info cards (you can keep one or add multiple)
+
+At the end, it generates a `wedding.yml` file that you can download or copy.
 
 ### Step 4: Upload YAML and photos
 
@@ -39,23 +54,34 @@ Quick links (inside your repo):
 - [Open `wedding.yml`](./src/data/wedding.yml)
 - [Open hero folder (`public/media/hero/`)](./public/media/hero/)
 - [Open story folder (`public/media/couple/`)](./public/media/couple/)
-- [Open social image folder (`public/media/og/`)](./public/media/og/)
+- [Open social image folder for WhatsApp/socials (`public/media/og/`)](./public/media/og/)
 
 `wedding.yml`:
 
 1. Open `wedding.yml`.
 2. Click the pencil icon.
 3. Replace content with your generated YAML.
-4. Commit changes.
+4. Click **Commit changes**.
+5. If direct commit is blocked by rules, choose **Create a new branch** and then **Create pull request**.
 
 Photos:
+
+1. Enter each folder (`hero`, `couple`, `og`).
+2. Click **Add file** (top-right).
+3. Choose **Upload files**.
+4. Select your files and click **Commit changes**.
 
 - `public/media/hero/` -> upload selected hero photo.
 - `public/media/couple/` -> upload story photos with the exact selected filenames.
 - `public/media/og/` -> upload share image (recommended 1200x630).
 
+Tip: you can also drag files directly into an open GitHub folder.
+
 Your site will be published at:
 `https://YOUR_USER.github.io/YOUR_REPO/`
+
+Your invitation URL is built using your GitHub username + repository name.
+Example: if your username is `mariaj` and your repo is `my-wedding`, your URL will be `https://mariaj.github.io/my-wedding/`.
 
 ---
 
@@ -87,14 +113,17 @@ The builder locale selector and site locale resolution will pick the new locale 
 
 ## Features
 
-- Responsive layout for mobile, tablet, and desktop.
-- Visual config builder (no coding needed).
-- Modular sections with enable/disable toggles.
-- Optional religious ceremony, civil ceremony, and celebration blocks.
-- Story gallery (1-4 photos).
-- Gifts section with optional bank data.
-- Countdown, RSVP, socials, playlist, and useful info cards.
-- Static deployment on GitHub Pages.
+- 📱 **Responsive** — Looks great on mobile, tablet, and desktop
+- 🎨 **Premium design** — Elegant typography, crafted SVG details, polished section flow
+- ⚙️ **100% configurable** — Everything is controlled from one YAML file
+- 🔒 **Serverless** — Free deployment on GitHub Pages
+- 🧩 **Modular sections** — Enable or disable each section independently
+- ⛪ **Religious ceremony** — Optional section with the same structure as civil ceremony
+- 🖼️ **Smart gallery** — 1 to 4 photos with automatic layout
+- 🏦 **Bank details** — Toggle on/off when needed
+- 📊 **Countdown** — Real-time countdown update
+- 🔧 **Config Builder** — Visual tool to generate config without coding
+- 🌐 **Scalable i18n** — Builder-selected locale + `en` fallback + easy new locale onboarding
 
 ## Theming
 
@@ -159,6 +188,13 @@ scripts/
 
 ## Credits and License
 
-Based on [SaidYes](https://github.com/roicort/saidyes) by [@roicort](https://github.com/roicort), under AGPL-3.0.
+This project is based on [**SaidYes**](https://github.com/roicort/saidyes) by [@roicort](https://github.com/roicort), distributed under the **GNU Affero General Public License v3.0 (AGPL-3.0)**.
 
-This fork keeps AGPL-3.0. See [LICENSE](./LICENSE).
+This fork keeps the same license. You can use, modify, and distribute this code as long as you:
+
+- Keep attribution to the original project
+- Distribute your modifications under the same AGPL-3.0 license
+
+See [LICENSE](./LICENSE) for more details.
+
+Made with ❤️ so your special day feels even more special.
